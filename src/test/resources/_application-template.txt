@@ -1,0 +1,40 @@
+server.port=8080
+logging.level.org.springframework.data.r2dbc=DEBUG
+
+# DB-VERSION-MIGRATION
+# A) Postgres:
+#r2dbc.migrate.resources-path=classpath:/db/migration/postgresql/*.sql
+#r2dbc.migrate.dialect=postgresql
+# B) H2:
+r2dbc.migrate.resources-path=classpath:/db/migration/h2/*.sql
+r2dbc.migrate.dialect=h2
+
+# H2-R2DBC
+# - EXECUTA DEFAULT - FALTANDO OUTRO DB
+# - "NO MODO DEFAULT": NAO CARECE CONFIGURACAO ALGUMA AQUI
+#AS CONFIGURACOES ABAIXO, NAO FUNCIONARAM PROPERLY, SAO APENAS EXEMPLOS:
+#spring.r2dbc.url=r2dbc:h2:mem:///customer
+
+
+# POSTGRES-R2DBC
+# - RODA COM COMPOSE
+#spring.r2dbc.url=r2dbc:postgresql://db-compose:5432/postgres
+#spring.r2dbc.url=r2dbc:pool:postgresql://localhost:5432/anime
+#spring.r2dbc.username=root
+#spring.r2dbc.password=root
+#spring.r2dbc.pool.validation-query=SELECT 1
+
+#spring.jpa.hibernate.ddl-auto=none
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+#logging.level.org.hibernate.type.descriptor.sql=trace
+#spring.r2dbc.url=r2dbc:postgresql://db-compose:${PORT_DB}/${POSTGRES_DB}?schema=${SCHEMA_DB}
+
+#spring.r2dbc.url=r2dbc:postgresql://db-compose:5432/postgres?schema=anime
+#spring.r2dbc.url=r2dbc:postgresql://db-compose:${PORT_DB}/${POSTGRES_DB}?schema=${SCHEMA_DB}
+
+#spring.jpa.hibernate.ddl-auto=none
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+#logging.level.org.hibernate.type.descriptor.sql=trace
+

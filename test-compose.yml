@@ -1,0 +1,49 @@
+version: "3.4"
+
+x-common-variables:
+  &db-env-vars
+    PORT_API: 8080
+
+volumes:
+  webflux_data:
+
+networks:
+  webflux_rede:
+
+services:
+
+# H2-R2DBC - RODA SEM COMPOSE
+# - EXECUTA DEFAULT: NAO CARECE CONFIGURACAO ALGUMA AQUI
+# - AS CONFIGURACOES ABAIXO SAO APENAS EXEMPLOS:
+#  h2:
+#    container_name: 'h2'
+#    hostname: 'h2'
+#    image: 1000kit/h2
+#    ports:
+#      - "8181:8181"
+#      - "1521:1521"
+#    volumes:
+#      - webflux_data:/opt/h2-data
+
+  web-api:
+    image: pauloportfolio/web-api
+    build:
+      context: ./
+      dockerfile: ./test-dockerfile
+      args:
+        JAR_FILE: target/spring-0.0.1-SNAPSHOT.jar
+    ports:
+      - 8080:8080
+      - 5005:5005
+    volumes:
+      - webflux_data:/var/lib/postgresql/data
+#    depends_on:
+#      - h2
+    networks:
+      - webflux_rede
+    environment:
+      PROFILE: test
+      <<: *db-env-vars
+      DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+      #JDK>=09: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+      #JDK  08: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
