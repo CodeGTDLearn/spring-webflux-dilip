@@ -11,6 +11,7 @@
 //import org.junit.AfterClass;
 //import org.junit.BeforeClass;
 //import org.junit.Ignore;
+//import org.junit.jupiter.api.Disabled;
 //import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 //import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 //import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -18,6 +19,8 @@
 //import org.springframework.test.annotation.DirtiesContext;
 //import org.springframework.test.context.ActiveProfiles;
 //import org.springframework.test.context.TestPropertySource;
+//import org.springframework.test.context.event.annotation.AfterTestClass;
+//import org.springframework.test.context.event.annotation.BeforeTestClass;
 //import reactor.blockhound.BlockHound;
 //
 //import static org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -37,7 +40,8 @@
 //@Slf4j
 //@TestPropertySource("classpath:application-test.properties")
 //@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-//@Ignore
+////@Ignore
+//@Disabled
 //@ActiveProfiles("test")
 //public class GlobalTestConfig {
 //
