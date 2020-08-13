@@ -1,4 +1,4 @@
-package com.reactive.spring.playgroung.virtual_time_test;
+package com.reactive.spring.test_strategy;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -45,7 +45,7 @@ public class VirtualTimeTest {
     }
 
     @Test
-    void testVirtualTimeConcantDelay() {
+    void testVirtualTimeConcatDelay() {
 
         VirtualTimeScheduler.getOrSet();
 
