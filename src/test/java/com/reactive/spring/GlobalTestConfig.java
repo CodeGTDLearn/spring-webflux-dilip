@@ -1,7 +1,5 @@
 package com.reactive.spring;
 
-//REST-ASSURE: MODULOS COMUNS
-
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
@@ -22,19 +20,35 @@ import reactor.blockhound.BlockHound;
 
 import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-//------CONFLITO: SpringRunner X WebFluxTest---------------------------
+//*********************************************
+//****        ++++ CONFLITO_01 ++++        ****
+//****       RunWith X DataR2dbcTest       ****
+//*********************************************
 @RunWith(SpringRunner.class)
-//--CONFLITANTES:-----------
 //@DataR2dbcTest
-//----------------------------------------------
-//--JPA-CONFLITO GERAL---------------------
+//****************************************************************************
+
+//*********************************************
+//**        ++++ CONFLITO_02 ++++          ****
+//** DataJpaTest X AutoConfigureTestDatabase **
+//*********************************************
 //@DataJpaTest
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//----------------------------------------------
+//****************************************************************************
+
+//*********************************************
+//**        ++++ OBSERVATION ++++          ****
+//**      SpringBootTest X WebFluxTest       **
+//*********************************************
+//SpringBootTest: Scan the whole ClassPath
+//WebFluxTest: DOES NOT scan the whole ClassPath, thus @contextConfiguration is needed
+//****************************************************************************
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WebFluxTest
+//****************************************************************************
+
 @ActiveProfiles("test")
 @TestPropertySource("classpath:application-test.properties")
-@WebFluxTest
 @AutoConfigureWebTestClient
 @Slf4j
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
