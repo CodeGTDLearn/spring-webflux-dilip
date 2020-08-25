@@ -3,6 +3,7 @@ version: "3.4"
 x-common-variables:
   &db-env-vars
     PORT_API: 8080
+    PORT_DEBUG: 5005
 
 volumes:
   webflux_data:
@@ -31,7 +32,7 @@ services:
       context: ./
       dockerfile: ./test-dockerfile
       args:
-        JAR_FILE: target/spring-0.0.1-SNAPSHOT.jar
+        JAR_FILE: target/*.jar
     ports:
       - 8080:8080
       - 5005:5005

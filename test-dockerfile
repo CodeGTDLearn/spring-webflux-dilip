@@ -8,7 +8,9 @@ COPY ${JAR_FILE} /opt/api/web-api.jar
 
 SHELL ["/bin/sh", "-c"]
 
-EXPOSE 8080
-EXPOSE 5005
+EXPOSE ${PORT_API}
+EXPOSE ${PORT_DEBUG}
+#EXPOSE 8080
+#EXPOSE 5005
 
 CMD java ${DEBUG_OPTIONS} -jar web-api.jar --spring.profiles.active=${PROFILE}

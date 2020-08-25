@@ -10,6 +10,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -25,7 +26,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 //****       RunWith X DataR2dbcTest       ****
 //*********************************************
 @RunWith(SpringRunner.class)
-//@DataR2dbcTest
+@DataR2dbcTest
 //****************************************************************************
 
 //*********************************************
@@ -44,7 +45,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 //WebFluxTest: DOES NOT scan the whole ClassPath, thus @contextConfiguration is needed
 //****************************************************************************
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WebFluxTest
+//@WebFluxTest
 //****************************************************************************
 
 @ActiveProfiles("test")

@@ -32,6 +32,17 @@
         </dependency>
 
         <dependency>
+            <groupId>name.nkonev.r2dbc-migrate</groupId>
+            <artifactId>r2dbc-migrate-spring-boot-starter</artifactId>
+            <version>1.0.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.r2dbc</groupId>
+            <artifactId>r2dbc-pool</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-h2</artifactId>
             <scope>runtime</scope>
@@ -42,21 +53,28 @@
             <artifactId>r2dbc-postgresql</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.r2dbc</groupId>
-            <artifactId>r2dbc-pool</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.h2database</groupId>-->
+        <!--            <artifactId>h2</artifactId>-->
+        <!--            <version>1.4.200</version>-->
+        <!--        </dependency>-->
 
-        <!--        MAIN FRAMEWORK-->
+        <!--        GENERAL-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-        <!--        GENERAL-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
 
@@ -112,19 +130,6 @@
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>name.nkonev.r2dbc-migrate</groupId>
-            <artifactId>r2dbc-migrate-spring-boot-starter</artifactId>
-            <version>1.0.8</version>
         </dependency>
     </dependencies>
 
