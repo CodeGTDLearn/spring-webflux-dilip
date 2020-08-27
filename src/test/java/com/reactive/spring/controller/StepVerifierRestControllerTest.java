@@ -1,7 +1,6 @@
 package com.reactive.spring.controller;
 
-import com.reactive.spring.GlobalTestConfig;
-import lombok.var;
+import com.reactive.spring.testConfigs.BasicTestConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +23,8 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.Assert.assertEquals;
 
 //@RunWith(SpringRunner.class)
-//@WebFluxTeste
-public class StepVerifierRestControllerTest extends GlobalTestConfig {
+//@WebFluxTest
+public class StepVerifierRestControllerTest extends BasicTestConfig {
 
     //DEFAULT: WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired

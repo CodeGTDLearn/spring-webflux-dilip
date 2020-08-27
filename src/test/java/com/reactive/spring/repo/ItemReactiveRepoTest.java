@@ -1,9 +1,12 @@
 package com.reactive.spring.repo;
 
-import com.reactive.spring.GlobalTestConfig;
+import com.reactive.spring.testConfigs.DbTestConfig;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import reactor.blockhound.BlockingOperationError;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -13,7 +16,9 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class ItemReactiveRepoTest extends GlobalTestConfig {
+@RunWith(SpringRunner.class)
+@DataR2dbcTest
+public class ItemReactiveRepoTest extends DbTestConfig {
 
     @Autowired
     ItemReactiveRepo repo;
@@ -26,18 +31,18 @@ public class ItemReactiveRepoTest extends GlobalTestConfig {
                 return "";
             });
 
-            Schedulers.parallel()
-                      .schedule(task);
+            Schedulers.parallel().schedule(task);
 
-            task.get(10,TimeUnit.SECONDS);
+            task.get(10 ,TimeUnit.SECONDS);
             Assert.fail("should fail");
         } catch (ExecutionException | InterruptedException | TimeoutException e) {
-            Assert.assertTrue("detected",e.getCause() instanceof BlockingOperationError);
+            Assert.assertTrue("detected" ,e.getCause() instanceof BlockingOperationError);
         }
     }
 
     @Test
     public void getAllItems() {
+
         StepVerifier
                 .create(repo.findAll())
                 .expectSubscription()

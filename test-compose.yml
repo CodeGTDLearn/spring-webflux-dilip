@@ -4,6 +4,10 @@ x-common-variables:
   &db-env-vars
     PORT_API: 8080
     PORT_DEBUG: 5005
+#    H2_DB: items
+#    H2_USER: root
+#    H2_PASSWORD: root
+#    H2_PORT: 1521
 
 volumes:
   webflux_data:
@@ -13,9 +17,6 @@ networks:
 
 services:
 
-# H2-R2DBC - RODA SEM COMPOSE
-# - EXECUTA DEFAULT: NAO CARECE CONFIGURACAO ALGUMA AQUI
-# - AS CONFIGURACOES ABAIXO SAO APENAS EXEMPLOS:
 #  h2:
 #    container_name: 'h2'
 #    hostname: 'h2'
@@ -25,6 +26,10 @@ services:
 #      - "1521:1521"
 #    volumes:
 #      - webflux_data:/opt/h2-data
+#    networks:
+#      - webflux_rede
+#    environment:
+#      *db-env-vars
 
   web-api:
     image: pauloportfolio/web-api
@@ -43,8 +48,31 @@ services:
     networks:
       - webflux_rede
     environment:
-      PROFILE: test
+#      DB_URL: r2dbc:h2:mem:///${H2_DB}
       <<: *db-env-vars
+      PROFILE: test
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
       #JDK>=09: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
       #JDK  08: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+
+# H2-R2DBC - RODA SEM COMPOSE
+# - EXECUTA DEFAULT: NAO CARECE CONFIGURACAO ALGUMA AQUI
+# - AS CONFIGURACOES ABAIXO SAO APENAS EXEMPLOS:
+#
+#  mongo:
+#    container_name: 'mongo'
+#    image: mongo:3.4
+#    hostname: mongo
+#    restart: always
+#    ports:
+#      - "27017:27017"
+#    volumes:
+#      - webflux_data:/data/db
+#    networks:
+#      - webflux_rede
+#    environment:
+#      *db-env-vars
+#    MONGO_DB: item
+#    MONGO_USER: root
+#    MONGO_PASSWORD: root
+#    MONGO_URI: mongodb://mongo:27017

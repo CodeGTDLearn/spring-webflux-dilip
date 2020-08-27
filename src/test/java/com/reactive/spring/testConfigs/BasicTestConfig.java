@@ -1,4 +1,4 @@
-package com.reactive.spring;
+package com.reactive.spring.testConfigs;
 
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -22,15 +23,7 @@ import reactor.blockhound.BlockHound;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 //*********************************************
-//****        ++++ CONFLITO_01 ++++        ****
-//****       RunWith X DataR2dbcTest       ****
-//*********************************************
-@RunWith(SpringRunner.class)
-@DataR2dbcTest
-//****************************************************************************
-
-//*********************************************
-//**        ++++ CONFLITO_02 ++++          ****
+//**            ++++ CONFLICT ++++           **
 //** DataJpaTest X AutoConfigureTestDatabase **
 //*********************************************
 //@DataJpaTest
@@ -38,23 +31,26 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 //****************************************************************************
 
 //*********************************************
-//**        ++++ OBSERVATION ++++          ****
+//**        ++++ OBSERVATION 01 ++++         **
 //**      SpringBootTest X WebFluxTest       **
 //*********************************************
 //SpringBootTest: Scan the whole ClassPath
 //WebFluxTest: DOES NOT scan the whole ClassPath, thus @contextConfiguration is needed
 //****************************************************************************
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@WebFluxTest
+@WebFluxTest
 //****************************************************************************
 
-@ActiveProfiles("test")
-@TestPropertySource("classpath:application-test.properties")
+//*********************************************
+//**      ++++ GENERAL CONFIGS ++++          **
+//**      SpringBootTest X WebFluxTest       **
+//*********************************************
+@RunWith(SpringRunner.class)
 @AutoConfigureWebTestClient
 @Slf4j
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @Ignore
-public class GlobalTestConfig {
+public class BasicTestConfig {
 
     final private static String BASE_PATH = "http://localhost:8080/dilipi";
     final private static Long MAX_TIMEOUT = 15000L;

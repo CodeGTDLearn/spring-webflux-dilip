@@ -47,7 +47,6 @@ services:
       - webflux_rede
     environment:
       DB_URL: r2dbc:pool:postgresql://db-compose:${PORT_DB}/${POSTGRES_DB}
-#      DB_URL: r2dbc:pool:postgresql://db-compose:${PORT_DB}/postgres
       <<: *db-env-vars
       PROFILE: dev
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m

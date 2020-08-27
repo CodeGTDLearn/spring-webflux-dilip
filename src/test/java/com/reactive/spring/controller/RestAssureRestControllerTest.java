@@ -1,22 +1,16 @@
 package com.reactive.spring.controller;
 
-import com.reactive.spring.GlobalTestConfig;
+import com.reactive.spring.testConfigs.BasicTestConfig;
 import io.restassured.http.ContentType;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.blockhound.BlockingOperationError;
-import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +23,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 //@RunWith(SpringRunner.class)
 //@WebFluxTest
-public class RestAssureRestControllerTest extends GlobalTestConfig {
+public class RestAssureRestControllerTest extends BasicTestConfig {
 
     //WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired

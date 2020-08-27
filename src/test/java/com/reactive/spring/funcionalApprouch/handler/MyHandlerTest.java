@@ -1,6 +1,6 @@
 package com.reactive.spring.funcionalApprouch.handler;
 
-import com.reactive.spring.GlobalTestConfig;
+import com.reactive.spring.testConfigs.BasicTestConfig;
 import com.reactive.spring.funcionalApprouch.router.MyRouter;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,8 +14,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +22,7 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration(classes = {MyRouter.class,MyHandler.class})
-public class MyHandlerTest extends GlobalTestConfig {
+public class MyHandlerTest extends BasicTestConfig {
 
     //DEFAULT: WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired
