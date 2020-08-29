@@ -25,7 +25,13 @@
     </properties>
 
     <dependencies>
-        <!--        DB-->
+        <!--*****************************************
+        ****                R2DBC               *****
+        *********************************************
+        **** TOTALMENTE INCOMPATIVEL COM O MONGO ****
+        *********************************************
+        **** COMENTAR TD PARTE DE MONGO, AO USAR ****
+        ******************************************-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-r2dbc</artifactId>
@@ -44,23 +50,36 @@
 
         <dependency>
             <groupId>io.r2dbc</groupId>
-            <artifactId>r2dbc-h2</artifactId>
-            <version>0.8.4.RELEASE</version>
-<!--            <scope>runtime</scope>-->
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.200</version>
+            <artifactId>r2dbc-postgresql</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.r2dbc</groupId>
-            <artifactId>r2dbc-postgresql</artifactId>
+            <artifactId>r2dbc-h2</artifactId>
+            <version>0.8.1.RELEASE</version>
         </dependency>
 
-        <!--        GENERAL-->
+        <!--*****************************************
+        ****                 MONGO              *****
+        *********************************************
+        **** TOTALMENTE INCOMPATIVEL COM O R2DBC ****
+        *********************************************
+        **** COMENTAR TD PARTE DE R2DBC, AO USAR ****
+        ******************************************-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>de.flapdoodle.embed</groupId>-->
+<!--            <artifactId>de.flapdoodle.embed.mongo</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+
+        <!--*****************************************
+        ****                GERAIS              *****
+        ******************************************-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
@@ -79,7 +98,21 @@
             <optional>true</optional>
         </dependency>
 
-        <!--        TEST-->
+        <dependency>
+            <groupId>io.projectreactor.tools</groupId>
+            <artifactId>blockhound</artifactId>
+            <version>1.0.3.RELEASE</version>
+        </dependency>
+
+        <!--        <dependency>-->
+        <!--            <groupId>io.projectreactor</groupId>-->
+        <!--            <artifactId>reactor-tools</artifactId>-->
+        <!--            <version>3.3.7.RELEASE</version>-->
+        <!--        </dependency>-->
+
+        <!--*****************************************
+        ****             TESTE - COMUM          *****
+        ******************************************-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -99,13 +132,24 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13</version>
             <scope>test</scope>
         </dependency>
 
-        <!--        MY REST-ASSURED-->
+        <!--*****************************************
+        ****         TESTE - REST ASSURED       *****
+        *********************************************
+        ****               REATIVO               ****
+        ******************************************-->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>spring-web-test-client</artifactId>
@@ -113,25 +157,64 @@
             <scope>test</scope>
         </dependency>
 
+        <!--*****************************************
+        ****         TESTE - REST ASSURED       *****
+        *********************************************
+        ****               BLOQUEANTE            ****
+        ******************************************-->
+        <!--        <dependency>-->
+        <!--            <groupId>io.rest-assured</groupId>-->
+        <!--            <artifactId>spring-mock-mvc</artifactId>-->
+        <!--            <version>3.3.0</version>-->
+        <!--            <scope>test</scope>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <groupId>com.sun.xml.bind</groupId>-->
+        <!--                    <artifactId>jaxb-osgi</artifactId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>io.rest-assured</groupId>-->
+        <!--            <artifactId>rest-assured</artifactId>-->
+        <!--            <version>3.0.3</version>-->
+        <!--            <scope>test</scope>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <groupId>com.sun.xml.bind</groupId>-->
+        <!--                    <artifactId>jaxb-osgi</artifactId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
+
+        <!--*****************************************
+        ****         TESTE - REST ASSURED       *****
+        *********************************************
+        ****           MODULOS GERAIS            ****
+        ******************************************-->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured-common</artifactId>
             <version>4.3.1</version>
         </dependency>
 
-        <!--        MY DEPENDENCIES-->
-        <dependency>
-            <groupId>io.projectreactor.tools</groupId>
-            <artifactId>blockhound</artifactId>
-            <version>1.0.3.RELEASE</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>io.rest-assured</groupId>-->
+        <!--            <artifactId>json-path</artifactId>-->
+        <!--            <version>4.1.0</version>-->
+        <!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
-            <scope>test</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>io.rest-assured</groupId>-->
+        <!--            <artifactId>json-schema-validator</artifactId>-->
+        <!--            <version>3.0.0</version>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>com.h2database</groupId>-->
+        <!--            <artifactId>h2</artifactId>-->
+        <!--        </dependency>-->
 
     </dependencies>
 
@@ -145,21 +228,3 @@
     </build>
 
 </project>
-
-        <!--        <dependency>-->
-        <!--            <groupId>dev.miku</groupId>-->
-        <!--            <artifactId>r2dbc-mysql</artifactId>-->
-        <!--            <scope>runtime</scope>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>mysql</groupId>-->
-        <!--            <artifactId>mysql-connector-java</artifactId>-->
-        <!--            <scope>runtime</scope>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.h2database</groupId>-->
-        <!--            <artifactId>h2</artifactId>-->
-        <!--            <scope>runtime</scope>-->
-        <!--        </dependency>-->

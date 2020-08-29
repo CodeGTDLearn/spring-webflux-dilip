@@ -1,1 +1,1 @@
-CREATE SCHEMA IF NOT EXISTS itemschema;
+CREATE SCHEMA IF NOT EXISTS itemschemamem;

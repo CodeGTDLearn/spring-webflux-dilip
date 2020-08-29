@@ -1,4 +1,1 @@
-CREATE SCHEMA IF NOT EXISTS item;
-
-
-
+CREATE SCHEMA IF NOT EXISTS itemschpostgres;

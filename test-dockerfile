@@ -10,7 +10,5 @@ SHELL ["/bin/sh", "-c"]
 
 EXPOSE ${PORT_API}
 EXPOSE ${PORT_DEBUG}
-#EXPOSE 8080
-#EXPOSE 5005
 
 CMD java ${DEBUG_OPTIONS} -jar web-api.jar --spring.profiles.active=${PROFILE}

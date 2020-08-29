@@ -18,10 +18,10 @@ import java.util.concurrent.TimeoutException;
 
 @RunWith(SpringRunner.class)
 @DataR2dbcTest
-public class ItemReactiveRepoTest extends DbTestConfig {
+public class ItemReactiveRepoMongoTest extends DbTestConfig {
 
     @Autowired
-    ItemReactiveRepo repo;
+    ItemReactiveRepoMongo repo;
 
     @Test
     public void blockHoundWorks() {
@@ -41,7 +41,7 @@ public class ItemReactiveRepoTest extends DbTestConfig {
     }
 
     @Test
-    public void getAllItems() {
+    public void findAllTest() {
 
         StepVerifier
                 .create(repo.findAll())
