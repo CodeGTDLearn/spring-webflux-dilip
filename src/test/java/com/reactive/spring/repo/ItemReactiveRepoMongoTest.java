@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.blockhound.BlockingOperationError;
 import reactor.core.scheduler.Schedulers;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 @RunWith(SpringRunner.class)
-@DataR2dbcTest
+@DataMongoTest
 public class ItemReactiveRepoMongoTest extends DbTestConfig {
 
     @Autowired

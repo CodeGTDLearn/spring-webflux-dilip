@@ -25,8 +25,8 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 //*********************************************
 //**            ++++ PROFILE ++++            **
 //*********************************************
-@ActiveProfiles("test")
-@TestPropertySource("classpath:application-test.properties")
+//@ActiveProfiles("mongo")
+//@TestPropertySource("classpath:application-mongo.properties")
 
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //*********************************************

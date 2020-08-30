@@ -34,7 +34,7 @@ services:
     image: pauloportfolio/web-api
     build:
       context: ./
-      dockerfile: ./dev-dockerfile
+      dockerfile: ./mongo-dockerfile
       args:
         JAR_FILE: target/*.jar
     ports:
