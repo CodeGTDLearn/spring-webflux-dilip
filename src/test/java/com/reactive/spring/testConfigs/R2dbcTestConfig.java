@@ -37,7 +37,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 @Slf4j
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @Ignore
-public class DbTestConfig {
+public class R2dbcTestConfig {
 
     final private static String BASE_PATH = "http://localhost:8080/dilipi";
     final private static Long MAX_TIMEOUT = 15000L;

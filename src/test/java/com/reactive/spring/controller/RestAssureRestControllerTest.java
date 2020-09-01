@@ -18,7 +18,6 @@ import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.stringContainsInOrder;
-import static org.junit.Assert.assertEquals;
 import static org.springframework.http.HttpStatus.OK;
 
 //@RunWith(SpringRunner.class)

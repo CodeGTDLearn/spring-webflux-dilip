@@ -6,15 +6,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
-@Data
 //@Table("items")
+@Data
+@Document
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
 
     @Id
-    private Integer id;
+    private String id;
     private String description;
     private Double price;
 
