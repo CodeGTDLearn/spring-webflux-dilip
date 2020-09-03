@@ -11,46 +11,39 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import reactor.blockhound.BlockHound;
 
-import static org.springframework.test.annotation.DirtiesContext.ClassMode;
-
-//*********************************************
-//**            ++++ PROFILE ++++            **
-//*********************************************
-//**              MONGO IS USING             **
-//**       EMBEDDED DB, SO THIS PROFILE      **
-//**             IS NOT NEEDED               **
-//*********************************************
-//@ActiveProfiles("mongo")
-//@TestPropertySource("classpath:application-dev.properties")
 
 //*********************************************
-//**      ++++ GENERAL CONFIGS ++++          **
+//**        ++++ GENERAL CONFIGS ++++        **
 //*********************************************
 //@WebFluxTest
 @DataMongoTest
 @RunWith(SpringRunner.class)
 @Slf4j
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+
+//*********************************************
+//**        ++++ DIRTIESCONTEXT ++++        **
+//*********************************************
+// @DirtiesContext OPTIONS, such as:
+// a) DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+// WILL INVALIDATE BlockHoundallowBlockingCallsInside
+// RESULTING IN:
+// a) reactor.core.Exceptions$ReactiveException: reactor.blockhound.BlockingOperationError:
+// Blocking call!
+@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 @Ignore
-public class MongoRepoConfig extends Suite {
+public class MongoRepoConfig {
 
     final private static String BASE_PATH = "http://localhost:8080/dilipi";
     final private static Long MAX_TIMEOUT = 15000L;
     final private static ContentType API_CONTENT_TYPE = ContentType.JSON;
-    //    //    @LocalServerPort
-    //    final private static int port = 8080;
 
     @BeforeClass
     public static void setUp() {
-        //        substitue os ".log().And()." em todos os REstAssureTestes
-        //                        RestAssuredWebTestClient
-        //                        .enableLoggingOfRequestAndResponseIfValidationFails();
-        //                        RestAssuredWebTestClient.config = new
-        //                        RestAssuredWebTestClientConfig().logConfig(
-        //                                LogDetail.BODY);
 
         //DEFINE CONFIG-GLOBAL PARA OS REQUESTS DOS TESTES
         RestAssuredWebTestClient.requestSpecification =
@@ -68,16 +61,35 @@ public class MongoRepoConfig extends Suite {
                         .build();
 
         BlockhoundLiberacao.liberarMetodos();
+        //        BlockHound
+        //                .install(builder -> builder
+        //                                 .allowBlockingCallsInside("java.io.PrintStream",
+        //                                                           "write"
+        //                                                          )
+        //                                 .allowBlockingCallsInside("java.io.FileOutputStream",
+        //                                                           "writeBytes"
+        //                                                          )
+        //                                 .allowBlockingCallsInside("java.io.BufferedOutputStream",
+        //                                                           "flushBuffer"
+        //                                                          )
+        //                                 .allowBlockingCallsInside("java.io.BufferedOutputStream",
+        //                                                           "flush"
+        //                                                          )
+        //                                 .allowBlockingCallsInside("java.io.OutputStreamWriter",
+        //                                                           "flushBuffer"
+        //                                                          )
+        //                                 .allowBlockingCallsInside("java.io.PrintStream",
+        //                                                           "print"
+        //                                                          )
+        //                                 .allowBlockingCallsInside("java.io.PrintStream",
+        //                                                           "println"
+        //                                                          )
+        //                        );
 
     }
 
     @AfterClass
     public static void tearDown() {
-        //        DELETE AO TOKEN AFTER ALL TESTS
-        //        FilterableRequestSpecification req = (FilterableRequestSpecification)
-        //        RestAssured.requestSpecification;
-        //        req.removeHeader("Autorization");
-
         RestAssuredWebTestClient.reset();
     }
 }

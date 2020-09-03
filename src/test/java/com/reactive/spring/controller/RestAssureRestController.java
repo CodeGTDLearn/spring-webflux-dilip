@@ -22,13 +22,13 @@ import static org.springframework.http.HttpStatus.OK;
 
 public class RestAssureRestController extends ControllersConfig {
 
-    //WEB-TEST-CLIENT WITH MOCK-SERVER
+    //WEB-TEST-CLIENT(non-blocking client) WITH MOCK-SERVER
     @Autowired
     WebTestClient webTestClient;
 
     @Before
     public void setUpLocal() {
-        //ADD REAL-SERVER IN WEB-TEST-CLIENT:
+        //REAL-SERVER(non-blocking client)  IN WEB-TEST-CLIENT:
         //webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:8080/dilipi").build();
     }
 

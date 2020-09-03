@@ -1,0 +1,51 @@
+version: "3.4"
+
+x-common-variables:
+  &env-vars
+    PORT_API: 8080
+    PORT_DEBUG: 5005
+#    MONGO_INITDB_ROOT_USERNAME: root
+#    MONGO_INITDB_ROOT_PASSWORD: root
+
+volumes:
+  webflux_data:
+
+networks:
+  webflux_rede:
+
+services:
+#  db-compose:
+#    container_name: db-compose
+#    image: mongo:3.6
+#    hostname: db-compose
+#    restart: always
+#    ports:
+#      - 27017:27017
+#    command: mongod --smallfiles --logpath=/dev/null # --quiet
+#    volumes:
+#      - webflux_data:/data/db
+#    networks:
+#      - webflux_rede
+#    environment:
+#      *env-vars
+
+  web-api:
+    image: pauloportfolio/web-api
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: target/*.jar
+    ports:
+      - 8080:8080
+      - 5005:5005
+    volumes:
+      - webflux_data:/data/db
+#    depends_on:
+#      - db-compose
+    networks:
+      - webflux_rede
+    environment:
+      PROFILE: dev
+      <<: *env-vars
+      DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m

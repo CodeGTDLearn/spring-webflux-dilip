@@ -12,13 +12,13 @@ public class VirtualTimeTest {
     @Test
     void noVirtualTime() {
 
-        Flux<Long> longFlux = Flux
+        Flux<Long> longFluxTimeCreated = Flux
                 .interval(Duration.ofSeconds(1))
                 .take(4)
                 .log();
 
         StepVerifier
-                .create(longFlux.log())
+                .create(longFluxTimeCreated.log())
                 .expectSubscription()
                 .expectNext(0L,1L,2L,3L)
                 .verifyComplete();
@@ -30,13 +30,13 @@ public class VirtualTimeTest {
 
         VirtualTimeScheduler.getOrSet();
 
-        Flux<Long> longFlux = Flux
+        Flux<Long> longFluxTimeCreated = Flux
                 .interval(Duration.ofSeconds(1))
                 .take(4)
                 .log();
 
         StepVerifier
-                .withVirtualTime(longFlux::log)
+                .withVirtualTime(longFluxTimeCreated::log)
                 .expectSubscription()
                 .thenAwait(Duration.ofSeconds(4))
                 .expectNext(0L,1L,2L,3L)
@@ -57,10 +57,10 @@ public class VirtualTimeTest {
                 .just("d","e","f")
                 .delayElements(Duration.ofSeconds(1));
 
-        final Flux<String> concat = Flux.concat(flux1,flux2);
+        final Flux<String> flux1PlusFlux2Concat = Flux.concat(flux1,flux2);
 
         StepVerifier
-                .withVirtualTime(concat::log)
+                .withVirtualTime(flux1PlusFlux2Concat::log)
                 .expectSubscription()
                 .thenAwait(Duration.ofSeconds(6))
                 .expectNextCount(6)

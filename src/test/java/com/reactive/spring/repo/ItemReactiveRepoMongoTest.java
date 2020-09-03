@@ -22,7 +22,7 @@ import java.util.concurrent.TimeoutException;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 
-public class ItemReactiveRepoMongoRepo extends MongoRepoConfig {
+public class ItemReactiveRepoMongoTest extends MongoRepoConfig {
 
     private List<Item> itemList;
     private Item itemTest;
@@ -89,6 +89,7 @@ public class ItemReactiveRepoMongoRepo extends MongoRepoConfig {
 
     @Test
     public void getItemByDescription() {
+        itemTest.setDescription("AAAAA");
         StepVerifier
                 .create(repo.findByDescription(itemTest.getDescription())
                             .log("getItemDescription: "))

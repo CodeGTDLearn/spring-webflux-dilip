@@ -26,13 +26,11 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WebFluxTest
 //****************************************************************************
-//SpringBootTest:
-//    Scan the whole ClassPath
+//@WebFluxTest
+//a) SpringBootTest: Scan the whole ClassPath
 //
-//WebFluxTest:
-//     DONT scan CLASSPATH
-//     USAR @ContextConfiguration(classes = {MyRouter.class,MyHandler.class})
-//             POSSIVEL ERRO: Unsatisfied dependency expressed through field 'webTestClient'
+//b) WebFluxTest: DONT scan CLASSPATH, USAR @contextConfiguration
+//       POSSIVEL ERRO: Unsatisfied dependency expressed through field 'webTestClient'
 //****************************************************************************
 
 //*********************************************
@@ -42,22 +40,25 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 @RunWith(SpringRunner.class)
 @AutoConfigureWebTestClient
 @Slf4j
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+
+//*********************************************
+//**        ++++ DIRTIESCONTEXT ++++        **
+//*********************************************
+// @DirtiesContext OPTIONS, such as:
+// a) DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+// WILL INVALIDATE BlockHoundallowBlockingCallsInside
+// RESULTING IN:
+// a) reactor.core.Exceptions$ReactiveException: reactor.blockhound.BlockingOperationError: Blocking call!
+@DirtiesContext
 @Ignore
 public class HandlerConfig {
 
     final private static String BASE_PATH = "http://localhost:8080/dilipi";
     final private static Long MAX_TIMEOUT = 15000L;
     final private static ContentType API_CONTENT_TYPE = ContentType.JSON;
-    //    //    @LocalServerPort
-    //    final private static int port = 8080;
 
     @BeforeClass
     public static void setUp() {
-        //substitue os ".log().And()." em todos os REstAssureTestes
-        //                RestAssuredWebTestClient.enableLoggingOfRequestAndResponseIfValidationFails();
-        //                RestAssuredWebTestClient.config = new RestAssuredWebTestClientConfig().logConfig(LogDetail.BODY);
-
         //DEFINE CONFIG-GLOBAL PARA OS REQUESTS DOS TESTES
         RestAssuredWebTestClient.requestSpecification =
                 new WebTestClientRequestSpecBuilder()
@@ -72,19 +73,11 @@ public class HandlerConfig {
                                 Matchers.lessThanOrEqualTo(MAX_TIMEOUT))
                         .expectContentType(API_CONTENT_TYPE)
                         .build();
-
-        //DEFININDO EXCECOES PARA O BLOCKHOUND:
-        BlockHound.install(
-                //                builder -> builder.allowBlockingCallsInside("java.util.UUID","randomUUID")
-                          );
+        BlockhoundLiberacao.liberarMetodos();
     }
 
     @AfterClass
     public static void tearDown() {
-        //        DELETE AO TOKEN AFTER ALL TESTS
-        //        FilterableRequestSpecification req = (FilterableRequestSpecification) RestAssured.requestSpecification;
-        //        req.removeHeader("Autorization");
-
         RestAssuredWebTestClient.reset();
     }
 }

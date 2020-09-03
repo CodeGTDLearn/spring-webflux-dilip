@@ -3,6 +3,7 @@ package com.reactive.spring.controller;
 import com.reactive.spring.testConfigs.ControllersConfig;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -32,7 +34,12 @@ public class StepVerifierRestController extends ControllersConfig {
 
     @Before
     public void setUpLocal() {
-        //ADDING REAL-SERVER IN WEB-TEST-CLIENT:
+
+        webTestClient = webTestClient
+                .mutate()
+                .responseTimeout(Duration.ofMillis(60000))
+                .build();
+        //REAL-SERVER(non-blocking client)  IN WEB-TEST-CLIENT:
         //webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:8080/dilipi").build();
     }
 
@@ -122,11 +129,10 @@ public class StepVerifierRestController extends ControllersConfig {
                 .expectStatus()
                 .isOk()
                 .expectBodyList(Integer.class)
-                .consumeWith((response) -> {
-                    assertEquals(expectedList,response.getResponseBody());
-                });
+                .consumeWith((response) -> assertEquals(expectedList,response.getResponseBody()));
     }
 
+    @Ignore
     @Test
     public void test_Infinite() {
         Flux<Long> LongFlux = webTestClient
