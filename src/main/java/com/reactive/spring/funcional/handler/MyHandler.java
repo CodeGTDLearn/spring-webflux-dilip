@@ -1,4 +1,4 @@
-package com.reactive.spring.funcionalApprouch.handler;
+package com.reactive.spring.funcional.handler;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;

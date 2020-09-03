@@ -31,7 +31,7 @@
         *********************************************
         **** TOTALMENTE INCOMPATIVEL COM O MONGO ****
         *********************************************
-        **** COMENTAR TD PARTE DE MONGO, AO USAR ****
+        ****        COMENTAR MONGO, AO USAR      ****
         ******************************************-->
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->
@@ -65,7 +65,7 @@
         *********************************************
         **** TOTALMENTE INCOMPATIVEL COM O R2DBC ****
         *********************************************
-        **** COMENTAR TD PARTE DE R2DBC, AO USAR ****
+        ****        COMENTAR R2DBC, AO USAR      ****
         ******************************************-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -99,6 +99,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!--*****************************************
+        ****             BLOCKHOUND             *****
+        *********************************************
+        **** TOTALMENTE INCOMPATIVEL .blockLast()****
+        *********************************************
+        **** COMENTAR R2DBC, AO USAR .blockLast()****
+        ******************************************-->
         <dependency>
             <groupId>io.projectreactor.tools</groupId>
             <artifactId>blockhound</artifactId>

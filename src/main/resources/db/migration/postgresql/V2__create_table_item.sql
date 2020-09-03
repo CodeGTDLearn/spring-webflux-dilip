@@ -1,9 +1,0 @@
-CREATE TABLE IF NOT EXISTS items
-(
-    id SERIAL NOT NULL PRIMARY KEY,
-    description VARCHAR(255) NOT NULL,
-    price NUMERIC(5,2)
-);
-
-
-

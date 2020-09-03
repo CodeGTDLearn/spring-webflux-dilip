@@ -10,8 +10,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -21,26 +24,31 @@ import reactor.blockhound.BlockHound;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 //*********************************************
-//**            ++++ PROFILE ++++            **
+//**        ++++ OBSERVATION 01 ++++         **
+//**      SpringBootTest X WebFluxTest       **
 //*********************************************
-//**              MONGO IS USING             **
-//**       EMBEDDED DB, SO THIS PROFILE      **
-//**             IS NOT NEEDED               **
-//*********************************************
-//@ActiveProfiles("mongo")
-//@TestPropertySource("classpath:application-mongo.properties")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@WebFluxTest
+//****************************************************************************
+//SpringBootTest:
+//    Scan the whole ClassPath
+//
+//WebFluxTest:
+//     DONT scan CLASSPATH
+//     USAR @ContextConfiguration(classes = {MyRouter.class,MyHandler.class})
+//             POSSIVEL ERRO: Unsatisfied dependency expressed through field 'webTestClient'
+//****************************************************************************
 
 //*********************************************
 //**      ++++ GENERAL CONFIGS ++++          **
+//**      SpringBootTest X WebFluxTest       **
 //*********************************************
-//@WebFluxTest
-@DataMongoTest
 @RunWith(SpringRunner.class)
-//@AutoConfigureWebTestClient
+@AutoConfigureWebTestClient
 @Slf4j
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @Ignore
-public class MongoTestConfig {
+public class BasicConfig {
 
     final private static String BASE_PATH = "http://localhost:8080/dilipi";
     final private static Long MAX_TIMEOUT = 15000L;
@@ -50,10 +58,9 @@ public class MongoTestConfig {
 
     @BeforeClass
     public static void setUp() {
-//        substitue os ".log().And()." em todos os REstAssureTestes
-//                        RestAssuredWebTestClient.enableLoggingOfRequestAndResponseIfValidationFails();
-//                        RestAssuredWebTestClient.config = new RestAssuredWebTestClientConfig().logConfig(
-//                                LogDetail.BODY);
+        //substitue os ".log().And()." em todos os REstAssureTestes
+        //                RestAssuredWebTestClient.enableLoggingOfRequestAndResponseIfValidationFails();
+        //                RestAssuredWebTestClient.config = new RestAssuredWebTestClientConfig().logConfig(LogDetail.BODY);
 
         //DEFINE CONFIG-GLOBAL PARA OS REQUESTS DOS TESTES
         RestAssuredWebTestClient.requestSpecification =
@@ -70,9 +77,10 @@ public class MongoTestConfig {
                         .expectContentType(API_CONTENT_TYPE)
                         .build();
 
-//        BlockHound.install(
-//                //builder -> builder.allowBlockingCallsInside("java.util.UUID","randomUUID")
-//                          );
+        //DEFININDO EXCECOES PARA O BLOCKHOUND:
+        BlockHound.install(
+                //                builder -> builder.allowBlockingCallsInside("java.util.UUID","randomUUID")
+                          );
     }
 
     @AfterClass
@@ -81,7 +89,7 @@ public class MongoTestConfig {
         //        FilterableRequestSpecification req = (FilterableRequestSpecification) RestAssured.requestSpecification;
         //        req.removeHeader("Autorization");
 
-//        RestAssuredWebTestClient.reset();
+        RestAssuredWebTestClient.reset();
     }
 }
 

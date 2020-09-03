@@ -1,6 +1,6 @@
 package com.reactive.spring.controller;
 
-import com.reactive.spring.testConfigs.BasicTestConfig;
+import com.reactive.spring.testConfigs.ControllersConfig;
 import io.restassured.http.ContentType;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.Assert;
@@ -20,9 +20,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.springframework.http.HttpStatus.OK;
 
-//@RunWith(SpringRunner.class)
-//@WebFluxTest
-public class RestAssureRestControllerTest extends BasicTestConfig {
+public class RestAssureRestController extends ControllersConfig {
 
     //WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired
@@ -61,7 +59,7 @@ public class RestAssureRestControllerTest extends BasicTestConfig {
                 .header("Content-type",ContentType.JSON)
 
                 .when()
-                .get("/flux")
+                .get("flux")
 
                 .then()
                 .statusCode(OK.value())

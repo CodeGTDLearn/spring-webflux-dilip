@@ -29,12 +29,11 @@ services:
     environment:
       *env-vars
 
-
   web-api:
     image: pauloportfolio/web-api
     build:
       context: ./
-      dockerfile: ./mongo-dockerfile
+      dockerfile: Dockerfile
       args:
         JAR_FILE: target/*.jar
     ports:
@@ -47,6 +46,6 @@ services:
     networks:
       - webflux_rede
     environment:
-      PROFILE: mongo
+      PROFILE: dev
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m

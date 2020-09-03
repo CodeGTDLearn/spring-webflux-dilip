@@ -1,7 +1,8 @@
-package com.reactive.spring.funcionalApprouch.handler;
+package com.reactive.spring.functional;
 
-import com.reactive.spring.testConfigs.BasicTestConfig;
-import com.reactive.spring.funcionalApprouch.router.MyRouter;
+import com.reactive.spring.funcional.handler.MyHandler;
+import com.reactive.spring.funcional.router.MyRouter;
+import com.reactive.spring.testConfigs.HandlerConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration(classes = {MyRouter.class,MyHandler.class})
-public class MyHandlerTest extends BasicTestConfig {
+public class HandlerTest extends HandlerConfig {
 
     //DEFAULT: WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired

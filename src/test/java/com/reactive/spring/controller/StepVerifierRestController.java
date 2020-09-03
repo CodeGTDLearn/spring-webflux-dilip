@@ -1,6 +1,6 @@
 package com.reactive.spring.controller;
 
-import com.reactive.spring.testConfigs.BasicTestConfig;
+import com.reactive.spring.testConfigs.ControllersConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 //@RunWith(SpringRunner.class)
 //@WebFluxTest
-public class StepVerifierRestControllerTest extends BasicTestConfig {
+public class StepVerifierRestController extends ControllersConfig {
 
     //DEFAULT: WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired

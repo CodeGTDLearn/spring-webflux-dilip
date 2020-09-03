@@ -1,43 +1,50 @@
 package com.reactive.spring.testConfigs;
 
 import io.restassured.builder.ResponseSpecBuilder;
-import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
-import io.restassured.module.webtestclient.config.RestAssuredWebTestClientConfig;
 import io.restassured.module.webtestclient.specification.WebTestClientRequestSpecBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 import reactor.blockhound.BlockHound;
 
 import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-
 //*********************************************
-//**            ++++ PROFILE ++++            **
+//**        ++++ OBSERVATION 01 ++++         **
+//**      SpringBootTest X WebFluxTest       **
 //*********************************************
-//@ActiveProfiles("mongo")
-//@TestPropertySource("classpath:application-mongo.properties")
-
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WebFluxTest
+//****************************************************************************
+//SpringBootTest:
+//    Scan the whole ClassPath
+//
+//WebFluxTest:
+//     DONT scan CLASSPATH
+//     USAR @ContextConfiguration(classes = {MyRouter.class,MyHandler.class})
+//             POSSIVEL ERRO: Unsatisfied dependency expressed through field 'webTestClient'
+//****************************************************************************
+
 //*********************************************
 //**      ++++ GENERAL CONFIGS ++++          **
+//**      SpringBootTest X WebFluxTest       **
 //*********************************************
-//@WebFluxTest
+@RunWith(SpringRunner.class)
 @AutoConfigureWebTestClient
 @Slf4j
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @Ignore
-public class R2dbcTestConfig {
+public class HandlerConfig {
 
     final private static String BASE_PATH = "http://localhost:8080/dilipi";
     final private static Long MAX_TIMEOUT = 15000L;
@@ -47,10 +54,9 @@ public class R2dbcTestConfig {
 
     @BeforeClass
     public static void setUp() {
-//        substitue os ".log().And()." em todos os REstAssureTestes
-//                        RestAssuredWebTestClient.enableLoggingOfRequestAndResponseIfValidationFails();
-//                        RestAssuredWebTestClient.config = new RestAssuredWebTestClientConfig().logConfig(
-//                                LogDetail.BODY);
+        //substitue os ".log().And()." em todos os REstAssureTestes
+        //                RestAssuredWebTestClient.enableLoggingOfRequestAndResponseIfValidationFails();
+        //                RestAssuredWebTestClient.config = new RestAssuredWebTestClientConfig().logConfig(LogDetail.BODY);
 
         //DEFINE CONFIG-GLOBAL PARA OS REQUESTS DOS TESTES
         RestAssuredWebTestClient.requestSpecification =
@@ -67,8 +73,9 @@ public class R2dbcTestConfig {
                         .expectContentType(API_CONTENT_TYPE)
                         .build();
 
+        //DEFININDO EXCECOES PARA O BLOCKHOUND:
         BlockHound.install(
-                //builder -> builder.allowBlockingCallsInside("java.util.UUID","randomUUID")
+                //                builder -> builder.allowBlockingCallsInside("java.util.UUID","randomUUID")
                           );
     }
 

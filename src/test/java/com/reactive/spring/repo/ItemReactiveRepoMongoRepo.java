@@ -1,10 +1,9 @@
 package com.reactive.spring.repo;
 
 import com.reactive.spring.entities.Item;
-import com.reactive.spring.testConfigs.MongoTestConfig;
+import com.reactive.spring.testConfigs.MongoRepoConfig;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.blockhound.BlockingOperationError;
@@ -23,7 +22,7 @@ import java.util.concurrent.TimeoutException;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 
-public class ItemReactiveRepoMongoTest extends MongoTestConfig {
+public class ItemReactiveRepoMongoRepo extends MongoRepoConfig {
 
     private List<Item> itemList;
     private Item itemTest;
@@ -49,7 +48,7 @@ public class ItemReactiveRepoMongoTest extends MongoTestConfig {
             .blockLast(); // THATS THE WHY, BLOCKHOUND IS NOT BEING USED.
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void blockHoundWorks() {
         try {

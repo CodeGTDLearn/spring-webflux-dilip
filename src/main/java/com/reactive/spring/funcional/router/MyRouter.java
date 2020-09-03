@@ -1,6 +1,6 @@
-package com.reactive.spring.funcionalApprouch.router;
+package com.reactive.spring.funcional.router;
 
-import com.reactive.spring.funcionalApprouch.handler.MyHandler;
+import com.reactive.spring.funcional.handler.MyHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
