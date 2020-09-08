@@ -1,4 +1,4 @@
-package com.reactive.spring.funcional.handler;
+package com.reactive.spring.handler;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 //@Component
 @AllArgsConstructor
-public class MyHandler {
+public class PlaygroundHandler {
 
     public Mono<ServerResponse> flux(ServerRequest serverRequest) {
         return ServerResponse

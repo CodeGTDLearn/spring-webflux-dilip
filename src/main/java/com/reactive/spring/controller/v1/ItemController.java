@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.reactive.spring.config.Mappings.*;
+import static com.reactive.spring.config.Mappings_Controller.*;
 import static org.springframework.http.HttpStatus.*;
 
 
@@ -22,12 +22,12 @@ public class ItemController {
     @Autowired
     ItemReactiveRepoMongo repo;
 
-    @GetMapping(GET_ENDPOINT)
+    @GetMapping(REQ_MAP)
     public Flux<Item> getAllItems() {
         return repo.findAll();
     }
 
-    @GetMapping(GET_ENDPOINT + ID_PATH)
+    @GetMapping(REQ_MAP + ID_PATH)
     public Mono<ResponseEntity<Item>> getById(@PathVariable String id) {
         return repo
                 .findById(id)
@@ -35,18 +35,18 @@ public class ItemController {
                 .defaultIfEmpty(new ResponseEntity<>(NOT_FOUND));
     }
 
-    @DeleteMapping(GET_ENDPOINT + ID_PATH)
+    @DeleteMapping(REQ_MAP + ID_PATH)
     public Mono<Void> delete(@PathVariable String id) {
         return repo.deleteById(id);
     }
 
-    @PostMapping(GET_ENDPOINT)
+    @PostMapping(REQ_MAP)
     @ResponseStatus(CREATED)
-    public Mono<Item> getById(@RequestBody Item item) {
+    public Mono<Item> save(@RequestBody Item item) {
         return repo.save(item);
     }
 
-    @PutMapping(GET_ENDPOINT + ID_PATH)
+    @PutMapping(REQ_MAP + ID_PATH)
     public Mono<ResponseEntity<Item>> update(@PathVariable String id,@RequestBody Item item) {
         return repo
                 .findById(id)

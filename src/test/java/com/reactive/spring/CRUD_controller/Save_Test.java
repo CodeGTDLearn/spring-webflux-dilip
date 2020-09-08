@@ -1,4 +1,4 @@
-package com.reactive.spring.controller.CRUD;
+package com.reactive.spring.CRUD_controller;
 
 
 import com.reactive.spring.entities.Item;
@@ -17,31 +17,30 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactive.spring.config.Mappings.GET_ENDPOINT;
-import static com.reactive.spring.config.Mappings.VERSION;
+import static com.reactive.spring.config.Mappings_Controller.REQ_MAP;
+import static com.reactive.spring.config.Mappings_Controller.VERSION;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @DirtiesContext
 @AutoConfigureWebTestClient
 @ActiveProfiles("test")
-public class ItemController_GetAll_Test {
+public class Save_Test {
 
     @Autowired
     WebTestClient webTestClient;
 
     private List<Item> itemList;
-    private Item item;
+    private Item itemTest;
 
     @Autowired
     ItemReactiveRepoMongo repo;
@@ -49,12 +48,12 @@ public class ItemController_GetAll_Test {
     @Before
     public void setUpLocal() {
 
-        item = newItemWithIdDescPrice("ABC").create();
+        itemTest = newItemWithIdDescPrice("ABC").create();
 
         itemList = Arrays.asList(newItemWithDescPrice().create(),
                                  newItemWithDescPrice().create(),
                                  newItemWithDescPrice().create(),
-                                 item
+                                 itemTest
                                 );
 
         repo.deleteAll()
@@ -65,83 +64,49 @@ public class ItemController_GetAll_Test {
     }
 
     @Test
-    public void getAllItems_HasSize() {
+    public void saveItem() {
         webTestClient
-                .get()
-                .uri(VERSION + GET_ENDPOINT)
-                .exchange()
-                .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
-                .expectBodyList(Item.class)
-                .hasSize(4);
-    }
-
-    @Test
-    public void getAllItems_ConsumesWith() {
-        webTestClient
-                .get()
-                .uri(VERSION + GET_ENDPOINT)
+                .post()
+                .uri(VERSION + REQ_MAP)
+                .body(Mono.just(itemTest),Item.class)
                 .exchange()
                 .expectStatus()
-                .isOk()
+                .isCreated()
                 .expectHeader()
                 .contentType(MediaType.APPLICATION_JSON)
-                .expectBodyList(Item.class)
-                .hasSize(4)
-                .consumeWith((response) -> {
-                    List<Item> listItems = response.getResponseBody();
-                    listItems.forEach((item) -> assertTrue(item.getId() != null));
-                });
+                .expectBody()
+                .jsonPath("$.id")
+                .isEqualTo(itemTest.getId())
+                .jsonPath("$.price")
+                .isEqualTo(itemTest.getPrice())
+                .jsonPath("$.description")
+                .isEqualTo(itemTest.getDescription())
+        ;
     }
 
     @Test
-    public void getAllItems_StepVerifier() {
-        Flux<Item> itemFlux =
-                webTestClient
-                        .get()
-                        .uri(VERSION + GET_ENDPOINT)
-                        .exchange()
-                        .expectStatus()
-                        .isOk()
-                        .expectHeader()
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .returnResult(Item.class)
-                        .getResponseBody();
-
-        StepVerifier
-                .create(itemFlux.log("Value from Network - StepVerifier: "))
-                .expectNextCount(4)
-                .verifyComplete();
-
-
-    }
-
-    @Test
-    public void getAllItems_RestAssuredWebTestClient() {
+    public void saveItem_RestAssuredWebTestClient() {
         RestAssuredWebTestClient
                 .given()
                 .webTestClient(webTestClient)
                 .header("Accept",ContentType.ANY)
                 .header("Content-type",ContentType.JSON)
+                .body(itemTest)
 
                 .when()
-                .get(VERSION + GET_ENDPOINT)
+                .post(VERSION + REQ_MAP)
 
                 .then()
-                .statusCode(OK.value())
                 .log()
                 .headers()
                 .and()
                 .log()
                 .body()
                 .and()
+                .contentType(ContentType.JSON)
+                .statusCode(CREATED.value())
 
-                .body("id" ,hasItem(item.getId()))
-                .body("description" ,hasItem(item.getDescription()))
-                .body("id" ,hasItem(itemList.get(0).getId()))
-                .body("id" ,hasItem(itemList.get(1).getId()))
-                .body("id" ,hasItem(itemList.get(2).getId()))
-
-        ;
+                //equalTo para o corpo do Json
+                .body("description", containsString(itemTest.getDescription()));
     }
 }

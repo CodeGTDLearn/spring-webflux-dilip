@@ -1,4 +1,4 @@
-package com.reactive.spring.controller.CRUD;
+package com.reactive.spring.CRUD_controller;
 
 
 import com.reactive.spring.entities.Item;
@@ -20,11 +20,11 @@ import reactor.core.publisher.Flux;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactive.spring.config.Mappings.*;
+import static com.github.javafaker.Faker.instance;
+import static com.reactive.spring.config.Mappings_Controller.*;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest
@@ -32,7 +32,7 @@ import static org.springframework.http.HttpStatus.OK;
 @DirtiesContext
 @AutoConfigureWebTestClient
 @ActiveProfiles("test")
-public class ItemController_Delete_Test {
+public class GetById_Test {
 
     @Autowired
     WebTestClient webTestClient;
@@ -62,28 +62,42 @@ public class ItemController_Delete_Test {
     }
 
     @Test
-    public void delete() {
+    public void getById_jsonPath() {
         webTestClient
-                .delete()
-                .uri(VERSION + GET_ENDPOINT + ID_PATH, item.getId())
-                .accept(MediaType.APPLICATION_JSON)
+                .get()
+                .uri(VERSION + REQ_MAP + ID_PATH,item.getId())
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(Void.class);
+                .expectHeader()
+                .contentType(MediaType.APPLICATION_JSON)
+                .expectBody()
+                .jsonPath("$.price",item.getPrice());
     }
 
     @Test
-    public void delete_RestAssuredWebTestClient() {
+    public void getById_jsonPath_notfound() {
+        webTestClient
+                .get()
+                .uri(VERSION + REQ_MAP + ID_PATH,instance().idNumber().valid())
+                .exchange()
+                .expectStatus()
+                .isNotFound();
+    }
+
+    @Test
+    public void getById_RestAssuredWebTestClient() {
         RestAssuredWebTestClient
                 .given()
                 .webTestClient(webTestClient)
 
                 .when()
-                .delete(VERSION + GET_ENDPOINT + ID_PATH, item.getId())
+                .get(VERSION + REQ_MAP + ID_PATH,item.getId())
 
                 .then()
                 .statusCode(OK.value())
+
+                .body("description",is(item.getDescription()))
         ;
     }
 }
