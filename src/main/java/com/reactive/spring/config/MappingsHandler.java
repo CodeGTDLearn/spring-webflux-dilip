@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class Mappings_Handler {
+public final class MappingsHandler {
     public static final String VERSION = "/v1";
     public static final String REQ_MAP = "/items";
     public static final String ID = "id";

@@ -1,0 +1,6 @@
+GET http://localhost:8081/client/retrieve/item
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET http://localhost:8081/client/exchange/item

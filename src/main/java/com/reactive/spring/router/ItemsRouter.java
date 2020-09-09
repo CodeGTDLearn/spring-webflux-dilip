@@ -8,8 +8,8 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static com.reactive.spring.config.Mappings_Handler.VERS_FUNCT_ENDPT;
-import static com.reactive.spring.config.Mappings_Handler.VERS_FUNCT_ENDPT_ID;
+import static com.reactive.spring.config.MappingsHandler.VERS_FUNCT_ENDPT;
+import static com.reactive.spring.config.MappingsHandler.VERS_FUNCT_ENDPT_ID;
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 
 

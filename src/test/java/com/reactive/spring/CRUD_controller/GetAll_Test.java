@@ -22,8 +22,8 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactive.spring.config.Mappings_Controller.REQ_MAP;
-import static com.reactive.spring.config.Mappings_Controller.VERSION;
+import static com.reactive.spring.config.MappingsControllerV1.REQ_MAP;
+import static com.reactive.spring.config.MappingsControllerV1.VERSION;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.hamcrest.Matchers.*;

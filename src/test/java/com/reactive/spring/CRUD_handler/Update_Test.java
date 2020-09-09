@@ -23,8 +23,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactive.spring.config.Mappings_Controller.*;
-import static com.reactive.spring.config.Mappings_Handler.VERS_FUNCT_ENDPT_ID;
+import static com.reactive.spring.config.MappingsHandler.VERS_FUNCT_ENDPT_ID;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.hamcrest.Matchers.is;

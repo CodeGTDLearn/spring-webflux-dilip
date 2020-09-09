@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import static com.reactive.spring.config.Mappings_Handler.ID;
+import static com.reactive.spring.config.MappingsHandler.ID;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
@@ -39,7 +39,8 @@ public class ItemsHandler {
 
     public Mono<ServerResponse> delete(ServerRequest request) {
         String id = request.pathVariable(ID);
-        Mono<Item> deletedItem = repo.findById(id);
+
+        Mono<Void> deletedItem = repo.deleteById(id);
 
         return ServerResponse.ok()
                              .contentType(MTYPE_JSON)

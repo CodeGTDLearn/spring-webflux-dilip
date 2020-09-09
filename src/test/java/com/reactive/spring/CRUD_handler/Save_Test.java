@@ -1,7 +1,6 @@
 package com.reactive.spring.CRUD_handler;
 
 import com.github.javafaker.Faker;
-import com.reactive.spring.config.Mappings_Handler;
 import com.reactive.spring.entities.Item;
 import com.reactive.spring.repo.ItemReactiveRepoMongo;
 import io.restassured.http.ContentType;
@@ -24,7 +23,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactive.spring.config.Mappings_Handler.VERS_FUNCT_ENDPT;
+import static com.reactive.spring.config.MappingsHandler.VERS_FUNCT_ENDPT;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.hamcrest.Matchers.containsString;

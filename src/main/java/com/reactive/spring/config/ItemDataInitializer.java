@@ -26,24 +26,20 @@ public class ItemDataInitializer implements CommandLineRunner {
 
 
     private List<Item> loadData() {
-
         return Arrays.asList(
                 new Item(null," Samsung TV",100.00),
                 new Item(null," LG TV",200.00),
                 new Item(null," Phillips TV",300.00),
                 new Item("ABC"," ViewSonic TV",400.00)
                             );
-
     }
 
     private void initialDataSetupLoadDataInMongoDb() {
-
         repo.deleteAll()
             .thenMany(Flux.fromIterable(loadData()))
             .flatMap(repo::save)
             .thenMany(repo.findAll())
             .subscribe(item -> System.out.println("Item Inserted via CLR: " + item));
-
     }
 
 }

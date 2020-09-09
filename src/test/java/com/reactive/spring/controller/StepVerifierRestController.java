@@ -1,6 +1,7 @@
 package com.reactive.spring.controller;
 
 import com.reactive.spring.testConfigs.ControllersConfig;
+import io.restassured.http.ContentType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -31,6 +32,8 @@ public class StepVerifierRestController extends ControllersConfig {
     //DEFAULT: WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired
     WebTestClient webTestClient;
+
+    final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
 
     @Before
     public void setUpLocal() {
@@ -66,7 +69,7 @@ public class StepVerifierRestController extends ControllersConfig {
         Flux<Integer> integerFlux = webTestClient
                 .get()
                 .uri("/dilipi/flux")
-                .accept(MediaType.APPLICATION_JSON)
+                .accept(MTYPE_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -87,12 +90,12 @@ public class StepVerifierRestController extends ControllersConfig {
         webTestClient
                 .get()
                 .uri("/dilipi/flux")
-                .accept(MediaType.APPLICATION_JSON)
+                .accept(MTYPE_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()
                 .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MTYPE_JSON)
                 .expectBodyList(Integer.class)
                 .hasSize(3);
     }
@@ -106,7 +109,7 @@ public class StepVerifierRestController extends ControllersConfig {
                 webTestClient
                         .get()
                         .uri("/dilipi/flux")
-                        .accept(MediaType.APPLICATION_JSON)
+                        .accept(MTYPE_JSON)
                         .exchange()
                         .expectStatus()
                         .isOk()
@@ -124,7 +127,7 @@ public class StepVerifierRestController extends ControllersConfig {
         webTestClient
                 .get()
                 .uri("/dilipi/flux")
-                .accept(MediaType.APPLICATION_JSON)
+                .accept(MTYPE_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -138,7 +141,7 @@ public class StepVerifierRestController extends ControllersConfig {
         Flux<Long> LongFlux = webTestClient
                 .get()
                 .uri("/dilipi/flux-stream-infinite")
-                .accept(MediaType.APPLICATION_STREAM_JSON)
+                .accept(MTYPE_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -162,7 +165,7 @@ public class StepVerifierRestController extends ControllersConfig {
         webTestClient
                 .get()
                 .uri("/dilipi/mono")
-                .accept(MediaType.APPLICATION_JSON)
+                .accept(MTYPE_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()

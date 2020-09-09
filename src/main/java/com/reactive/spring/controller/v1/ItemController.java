@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.reactive.spring.config.Mappings_Controller.*;
+import static com.reactive.spring.config.MappingsControllerV1.*;
 import static org.springframework.http.HttpStatus.*;
 
 
