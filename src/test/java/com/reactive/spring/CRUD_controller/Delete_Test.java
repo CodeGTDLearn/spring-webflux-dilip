@@ -23,7 +23,6 @@ import java.util.List;
 import static com.reactive.spring.config.MappingsControllerV1.*;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest
