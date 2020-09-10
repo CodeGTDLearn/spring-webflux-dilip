@@ -22,8 +22,8 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactive.spring.config.MappingsControllerV1.REQ_MAP;
-import static com.reactive.spring.config.MappingsControllerV1.VERSION;
+import static com.reactive.spring.config.MappingsController_v1_CRUD.REQ_MAP;
+import static com.reactive.spring.config.MappingsController_v1_CRUD.VERSION;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.hamcrest.Matchers.*;
@@ -44,6 +44,10 @@ public class Save_Test {
 
     @Autowired
     ItemReactiveRepoMongo repo;
+
+    final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
+    final ContentType CONT_ANY = ContentType.ANY;
+    final ContentType CONT_JSON = ContentType.JSON;
 
     @Before
     public void setUpLocal() {
@@ -73,7 +77,7 @@ public class Save_Test {
                 .expectStatus()
                 .isCreated()
                 .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MTYPE_JSON)
                 .expectBody()
                 .jsonPath("$.id")
                 .isEqualTo(itemTest.getId())
@@ -89,8 +93,8 @@ public class Save_Test {
         RestAssuredWebTestClient
                 .given()
                 .webTestClient(webTestClient)
-                .header("Accept",ContentType.ANY)
-                .header("Content-type",ContentType.JSON)
+                .header("Accept",CONT_ANY)
+                .header("Content-type",CONT_JSON)
                 .body(itemTest)
 
                 .when()
@@ -103,7 +107,7 @@ public class Save_Test {
                 .log()
                 .body()
                 .and()
-                .contentType(ContentType.JSON)
+                .contentType(CONT_JSON)
                 .statusCode(CREATED.value())
 
                 //equalTo para o corpo do Json

@@ -8,8 +8,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static com.reactive.spring.config.MappingsHandler.VERS_FUNCT_ENDPT;
-import static com.reactive.spring.config.MappingsHandler.VERS_FUNCT_ENDPT_ID;
+import static com.reactive.spring.config.MappingsHandler.*;
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 
 
@@ -19,14 +18,23 @@ public class ItemsRouter {
     final MediaType JSON = MediaType.APPLICATION_JSON;
 
     @Bean
-    public RouterFunction<ServerResponse> itemsRoute(ItemsHandler itemsHandler) {
+    public RouterFunction<ServerResponse> itemsRoute(ItemsHandler handler) {
         return RouterFunctions
-                .route(GET(VERS_FUNCT_ENDPT).and(accept(JSON)),itemsHandler::getAll)
-                .andRoute(POST(VERS_FUNCT_ENDPT).and(accept(JSON)),itemsHandler::save)
-                .andRoute(GET(VERS_FUNCT_ENDPT_ID).and(accept(JSON)),itemsHandler::getById)
-                .andRoute(DELETE(VERS_FUNCT_ENDPT_ID).and(accept(JSON)),itemsHandler::delete)
-                .andRoute(PUT(VERS_FUNCT_ENDPT_ID).and(accept(JSON)),itemsHandler::update)
+                .route(GET(VERS_FUNCT_ENDPT).and(accept(JSON)),handler::getAll)
+                .andRoute(POST(VERS_FUNCT_ENDPT).and(accept(JSON)),handler::save)
+                .andRoute(GET(VERS_FUNCT_ENDPT_ID).and(accept(JSON)),handler::getById)
+                .andRoute(DELETE(VERS_FUNCT_ENDPT_ID).and(accept(JSON)),handler::delete)
+                .andRoute(PUT(VERS_FUNCT_ENDPT_ID).and(accept(JSON)),handler::update)
+
+                //.andRoute(PUT(VERS_FUNCT_ENDPT_EXCEPT).and(accept(JSON)),
+                //itemsHandler::except)
                 ;
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> errorRoute(ItemsHandler handler) {
+        return RouterFunctions
+                .route(GET(VERS_FUNCT_ENDPT_EXCEPT).and(accept(JSON)),handler::except);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.reactive.spring.controller;
 
 import com.reactive.spring.entities.Item;
-import com.reactive.spring.service.ItemServiceMongo;
+import com.reactive.spring.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +17,13 @@ import static org.springframework.http.HttpStatus.OK;
 public class ItemControllerMongo {
 
     @Autowired
-    ItemServiceMongo service;
+    ItemService service;
 
     @GetMapping(value = "item-flux-stream", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
 //    @GetMapping
     @ResponseStatus(OK)
     public Flux<Item> findAll(){
-        return service.findAll();
+        return service.getAll();
     }
 
 }

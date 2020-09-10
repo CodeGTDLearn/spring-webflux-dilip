@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import static com.client.config.Mappings.*;
+import static com.client.config.MappingsClient.*;
 
 @RestController
 @RequestMapping(ROOT)

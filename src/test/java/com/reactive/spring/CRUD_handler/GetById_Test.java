@@ -43,6 +43,8 @@ public class GetById_Test {
     @Autowired
     ItemReactiveRepoMongo repo;
 
+    final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
+
     @Before
     public void setUpLocal() {
         var ItemTestId = instance()
@@ -64,7 +66,7 @@ public class GetById_Test {
             .blockLast(); // THATS THE WHY, BLOCKHOUND IS NOT BEING USED.
     }
 
-    final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
+
 
     @Test
     public void getById_jsonPath() {

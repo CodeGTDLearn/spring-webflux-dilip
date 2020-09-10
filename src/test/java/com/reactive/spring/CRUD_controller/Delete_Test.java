@@ -3,6 +3,7 @@ package com.reactive.spring.CRUD_controller;
 
 import com.reactive.spring.entities.Item;
 import com.reactive.spring.repo.ItemReactiveRepoMongo;
+import io.restassured.http.ContentType;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,7 @@ import reactor.core.publisher.Flux;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactive.spring.config.MappingsControllerV1.*;
+import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.springframework.http.HttpStatus.OK;
@@ -40,6 +41,8 @@ public class Delete_Test {
 
     @Autowired
     ItemReactiveRepoMongo repo;
+
+    final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
 
     @Before
     public void setUpLocal() {
@@ -64,7 +67,7 @@ public class Delete_Test {
         webTestClient
                 .delete()
                 .uri(VERSION + REQ_MAP + ID_PATH,item.getId())
-                .accept(MediaType.APPLICATION_JSON)
+                .accept(MTYPE_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()

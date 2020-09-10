@@ -1,6 +1,7 @@
 package com.reactive.spring.CRUD_controller;
 
 
+import com.github.javafaker.Faker;
 import com.reactive.spring.entities.Item;
 import com.reactive.spring.repo.ItemReactiveRepoMongo;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
@@ -21,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.github.javafaker.Faker.instance;
-import static com.reactive.spring.config.MappingsControllerV1.*;
+import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.hamcrest.Matchers.is;
@@ -38,20 +39,23 @@ public class GetById_Test {
     WebTestClient webTestClient;
 
     private List<Item> itemList;
-    private Item item;
+    private Item itemTest;
 
     @Autowired
     ItemReactiveRepoMongo repo;
+    final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
 
     @Before
     public void setUpLocal() {
 
-        item = newItemWithIdDescPrice("ABC").create();
+        itemTest = newItemWithIdDescPrice(Faker.instance()
+                                               .idNumber()
+                                               .valid()).create();
 
         itemList = Arrays.asList(newItemWithDescPrice().create(),
                                  newItemWithDescPrice().create(),
                                  newItemWithDescPrice().create(),
-                                 item
+                                 itemTest
                                 );
 
         repo.deleteAll()
@@ -65,21 +69,22 @@ public class GetById_Test {
     public void getById_jsonPath() {
         webTestClient
                 .get()
-                .uri(VERSION + REQ_MAP + ID_PATH,item.getId())
+                .uri(VERSION + REQ_MAP + ID_PATH,itemTest.getId())
                 .exchange()
                 .expectStatus()
                 .isOk()
                 .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MTYPE_JSON)
                 .expectBody()
-                .jsonPath("$.price",item.getPrice());
+                .jsonPath("$.price",itemTest.getPrice());
     }
 
     @Test
     public void getById_jsonPath_notfound() {
         webTestClient
                 .get()
-                .uri(VERSION + REQ_MAP + ID_PATH,instance().idNumber().valid())
+                .uri(VERSION + REQ_MAP + ID_PATH,instance().idNumber()
+                                                           .valid())
                 .exchange()
                 .expectStatus()
                 .isNotFound();
@@ -92,12 +97,12 @@ public class GetById_Test {
                 .webTestClient(webTestClient)
 
                 .when()
-                .get(VERSION + REQ_MAP + ID_PATH,item.getId())
+                .get(VERSION + REQ_MAP + ID_PATH,itemTest.getId())
 
                 .then()
                 .statusCode(OK.value())
 
-                .body("description",is(item.getDescription()))
+                .body("description",is(itemTest.getDescription()))
         ;
     }
 }

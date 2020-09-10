@@ -1,6 +1,6 @@
 package com.reactive.spring.controller.v1_CRUD;
 
-import com.reactive.spring.repo.ItemReactiveRepoMongo;
+import com.reactive.spring.service.ItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,21 +9,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import static com.reactive.spring.config.MappingsControllerV1.*;
+import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
 
 
 @RestController
 @Slf4j
-@RequestMapping(value = VERSION)
+@RequestMapping(VERSION + REQ_MAP)
 //@AllArgsConstructor
 public class Delete {
 
-    @Autowired
-    ItemReactiveRepoMongo repo;
+    //    @Autowired
+    //    ItemReactiveRepoMongo repo;
 
-    @DeleteMapping(REQ_MAP + ID_PATH)
+    @Autowired
+    ItemService service;
+
+    @DeleteMapping(ID_PATH)
     public Mono<Void> delete(@PathVariable String id) {
-        return repo.deleteById(id);
+        return service.delete(id);
     }
 
 }

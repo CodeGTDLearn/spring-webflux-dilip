@@ -24,7 +24,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactive.spring.config.MappingsControllerV1.*;
+import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.springframework.http.HttpStatus.OK;
@@ -41,6 +41,10 @@ public class Update_Test {
 
     private List<Item> itemList;
     private Item itemTest;
+
+    final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
+    final ContentType CONT_ANY = ContentType.ANY;
+    final ContentType CONT_JSON = ContentType.JSON;
 
     @Autowired
     ItemReactiveRepoMongo repo;
@@ -75,8 +79,8 @@ public class Update_Test {
         webTestClient
                 .put()
                 .uri(VERSION + REQ_MAP + ID_PATH,itemTest.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MTYPE_JSON)
+                .accept(MTYPE_JSON)
                 .body(Mono.just(itemTest),Item.class)
                 .exchange()
                 .expectStatus()
@@ -92,8 +96,8 @@ public class Update_Test {
                 .uri(VERSION + REQ_MAP + ID_PATH,Faker.instance()
                                                       .random()
                                                       .hex())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MTYPE_JSON)
+                .accept(MTYPE_JSON)
                 .body(Mono.just(itemTest),Item.class)
                 .exchange()
                 .expectStatus()
@@ -109,8 +113,8 @@ public class Update_Test {
         RestAssuredWebTestClient
                 .given()
                 .webTestClient(webTestClient)
-                .header("Accept",ContentType.ANY)
-                .header("Content-type",ContentType.JSON)
+                .header("Accept",CONT_ANY)
+                .header("Content-type",CONT_JSON)
                 .body(itemTest)
 
                 .when()

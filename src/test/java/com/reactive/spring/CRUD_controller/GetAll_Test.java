@@ -22,8 +22,8 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.reactive.spring.config.MappingsControllerV1.REQ_MAP;
-import static com.reactive.spring.config.MappingsControllerV1.VERSION;
+import static com.reactive.spring.config.MappingsController_v1_CRUD.REQ_MAP;
+import static com.reactive.spring.config.MappingsController_v1_CRUD.VERSION;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.hamcrest.Matchers.*;
@@ -45,6 +45,10 @@ public class GetAll_Test {
 
     @Autowired
     ItemReactiveRepoMongo repo;
+
+    final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
+    final ContentType CONT_ANY = ContentType.ANY;
+    final ContentType CONT_JSON = ContentType.JSON;
 
     @Before
     public void setUpLocal() {
@@ -71,7 +75,7 @@ public class GetAll_Test {
                 .uri(VERSION + REQ_MAP)
                 .exchange()
                 .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MTYPE_JSON)
                 .expectBodyList(Item.class)
                 .hasSize(4);
     }
@@ -85,7 +89,7 @@ public class GetAll_Test {
                 .expectStatus()
                 .isOk()
                 .expectHeader()
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MTYPE_JSON)
                 .expectBodyList(Item.class)
                 .hasSize(4)
                 .consumeWith((response) -> {
@@ -104,7 +108,7 @@ public class GetAll_Test {
                         .expectStatus()
                         .isOk()
                         .expectHeader()
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MTYPE_JSON)
                         .returnResult(Item.class)
                         .getResponseBody();
 
@@ -121,8 +125,8 @@ public class GetAll_Test {
         RestAssuredWebTestClient
                 .given()
                 .webTestClient(webTestClient)
-                .header("Accept",ContentType.ANY)
-                .header("Content-type",ContentType.JSON)
+                .header("Accept",CONT_ANY)
+                .header("Content-type",CONT_JSON)
 
                 .when()
                 .get(VERSION + REQ_MAP)

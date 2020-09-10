@@ -79,4 +79,7 @@ public class ItemsHandler {
                         .body(repo.save(item),Item.class));
     }
 
+    public Mono<ServerResponse> except(ServerRequest request) {
+        throw new RuntimeException("RuntimeException Ocurred - Functional Handler");
+    }
 }
