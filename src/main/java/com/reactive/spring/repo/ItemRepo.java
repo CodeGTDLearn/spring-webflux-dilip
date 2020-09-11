@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface ItemReactiveRepoMongo extends ReactiveMongoRepository<Item, String> {
+public interface ItemRepo extends ReactiveMongoRepository<Item, String> {
 
     Mono<Item> findByDescription(String description);
 }

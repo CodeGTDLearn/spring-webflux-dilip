@@ -1,8 +1,9 @@
 package com.reactive.spring.CRUD_controller;
 
 
+import com.github.javafaker.Faker;
 import com.reactive.spring.entities.Item;
-import com.reactive.spring.repo.ItemReactiveRepoMongo;
+import com.reactive.spring.repo.ItemRepo;
 import io.restassured.http.ContentType;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.Before;
@@ -17,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,24 +28,23 @@ import static com.reactive.spring.config.MappingsController_v1_CRUD.VERSION;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @DirtiesContext
 @AutoConfigureWebTestClient
 @ActiveProfiles("test")
-public class GetAll_Test {
+public class Controller_Save {
 
     @Autowired
-    WebTestClient webTestClient;
+    WebTestClient client;
 
     private List<Item> itemList;
-    private Item item;
+    private Item itemTest;
 
     @Autowired
-    ItemReactiveRepoMongo repo;
+    ItemRepo repo;
 
     final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
     final ContentType CONT_ANY = ContentType.ANY;
@@ -53,12 +53,14 @@ public class GetAll_Test {
     @Before
     public void setUpLocal() {
 
-        item = newItemWithIdDescPrice("ABC").create();
+        itemTest = newItemWithIdDescPrice(Faker.instance()
+                                               .idNumber()
+                                               .valid()).create();
 
         itemList = Arrays.asList(newItemWithDescPrice().create(),
                                  newItemWithDescPrice().create(),
                                  newItemWithDescPrice().create(),
-                                 item
+                                 itemTest
                                 );
 
         repo.deleteAll()
@@ -69,83 +71,49 @@ public class GetAll_Test {
     }
 
     @Test
-    public void getAllItems_HasSize() {
-        webTestClient
-                .get()
+    public void webTestClient() {
+        client
+                .post()
                 .uri(VERSION + REQ_MAP)
-                .exchange()
-                .expectHeader()
-                .contentType(MTYPE_JSON)
-                .expectBodyList(Item.class)
-                .hasSize(4);
-    }
-
-    @Test
-    public void getAllItems_ConsumesWith() {
-        webTestClient
-                .get()
-                .uri(VERSION + REQ_MAP)
+                .body(Mono.just(itemTest),Item.class)
                 .exchange()
                 .expectStatus()
-                .isOk()
+                .isCreated()
                 .expectHeader()
                 .contentType(MTYPE_JSON)
-                .expectBodyList(Item.class)
-                .hasSize(4)
-                .consumeWith((response) -> {
-                    List<Item> listItems = response.getResponseBody();
-                    listItems.forEach((item) -> assertTrue(item.getId() != null));
-                });
+                .expectBody()
+                .jsonPath("$.id")
+                .isEqualTo(itemTest.getId())
+                .jsonPath("$.price")
+                .isEqualTo(itemTest.getPrice())
+                .jsonPath("$.description")
+                .isEqualTo(itemTest.getDescription())
+        ;
     }
 
     @Test
-    public void getAllItems_StepVerifier() {
-        Flux<Item> itemFlux =
-                webTestClient
-                        .get()
-                        .uri(VERSION + REQ_MAP)
-                        .exchange()
-                        .expectStatus()
-                        .isOk()
-                        .expectHeader()
-                        .contentType(MTYPE_JSON)
-                        .returnResult(Item.class)
-                        .getResponseBody();
-
-        StepVerifier
-                .create(itemFlux.log("Value from Network - StepVerifier: "))
-                .expectNextCount(4)
-                .verifyComplete();
-
-
-    }
-
-    @Test
-    public void getAllItems_RestAssuredWebTestClient() {
+    public void RA() {
         RestAssuredWebTestClient
                 .given()
-                .webTestClient(webTestClient)
+                .webTestClient(client)
                 .header("Accept",CONT_ANY)
                 .header("Content-type",CONT_JSON)
+                .body(itemTest)
 
                 .when()
-                .get(VERSION + REQ_MAP)
+                .post(VERSION + REQ_MAP)
 
                 .then()
-                .statusCode(OK.value())
                 .log()
                 .headers()
                 .and()
                 .log()
                 .body()
                 .and()
+                .contentType(CONT_JSON)
+                .statusCode(CREATED.value())
 
-                .body("id" ,hasItem(item.getId()))
-                .body("description" ,hasItem(item.getDescription()))
-                .body("id" ,hasItem(itemList.get(0).getId()))
-                .body("id" ,hasItem(itemList.get(1).getId()))
-                .body("id" ,hasItem(itemList.get(2).getId()))
-
-        ;
+                //equalTo para o corpo do Json
+                .body("description",containsString(itemTest.getDescription()));
     }
 }

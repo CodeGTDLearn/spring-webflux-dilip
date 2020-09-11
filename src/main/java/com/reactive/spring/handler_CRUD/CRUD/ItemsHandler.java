@@ -1,7 +1,8 @@
-package com.reactive.spring.handler;
+package com.reactive.spring.handler_CRUD.CRUD;
 
 import com.reactive.spring.entities.Item;
-import com.reactive.spring.repo.ItemReactiveRepoMongo;
+import com.reactive.spring.repo.ItemRepo;
+import com.reactive.spring.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -17,20 +18,23 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 @Component
 public class ItemsHandler {
 
+//    @Autowired
+//    ItemRepo repo;
+
     @Autowired
-    ItemReactiveRepoMongo repo;
+    ItemService service;
 
     final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
 
     public Mono<ServerResponse> getAll(ServerRequest request) {
         return ok()
                 .contentType(MTYPE_JSON)
-                .body(repo.findAll(),Item.class);
+                .body(service.getAll(),Item.class);
     }
 
     public Mono<ServerResponse> getById(ServerRequest request) {
         String id = request.pathVariable(ID);
-        Mono<Item> itemFound = repo.findById(id);
+        Mono<Item> itemFound = service.getById(id);
 
         return itemFound.flatMap(item -> ok().contentType(MTYPE_JSON)
                                              .body(fromValue(item)))
@@ -40,7 +44,7 @@ public class ItemsHandler {
     public Mono<ServerResponse> delete(ServerRequest request) {
         String id = request.pathVariable(ID);
 
-        Mono<Void> deletedItem = repo.deleteById(id);
+        Mono<Void> deletedItem = service.delete(id);
 
         return ServerResponse.ok()
                              .contentType(MTYPE_JSON)
@@ -53,12 +57,12 @@ public class ItemsHandler {
         Mono<Item> updatedItem = request
                 .bodyToMono(Item.class)
                 .flatMap(item -> {
-                    Mono<Item> itemMono = repo
-                            .findById(id)
+                    Mono<Item> itemMono = service
+                            .getById(id)
                             .flatMap(currentItem -> {
                                 currentItem.setDescription(item.getDescription());
                                 currentItem.setPrice(item.getPrice());
-                                return repo.save(currentItem);
+                                return service.save(currentItem);
                             });
                     return itemMono;
                 });
@@ -76,7 +80,7 @@ public class ItemsHandler {
         return itemToBeInserted
                 .flatMap(item -> ok()
                         .contentType(MTYPE_JSON)
-                        .body(repo.save(item),Item.class));
+                        .body(service.save(item),Item.class));
     }
 
     public Mono<ServerResponse> except(ServerRequest request) {

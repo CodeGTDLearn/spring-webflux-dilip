@@ -12,10 +12,10 @@ import java.util.Map;
 public class CustomAttributes extends DefaultErrorAttributes {
     @Override
     public Map<String, Object> getErrorAttributes(
-            ServerRequest request,
+            ServerRequest request ,
             ErrorAttributeOptions options) {
 
-        Map<String, Object> errorAttribs = super.getErrorAttributes(request,options);
+        Map<String, Object> errorAttributesMap = super.getErrorAttributes(request ,options);
 
         Throwable throwable = getError(request);
 
@@ -23,11 +23,10 @@ public class CustomAttributes extends DefaultErrorAttributes {
 
             ResponseStatusException ex = (ResponseStatusException) throwable;
 
-            errorAttribs.put("mensagem",ex.getMessage());
-            errorAttribs.put("developerMensagem","A ResponseStatusException happened!!!");
+            errorAttributesMap.put("mensagem" ,ex.getMessage());
+            errorAttributesMap.put("developerMensagem" ,"A ResponseStatusException happened!!!");
         }
-        return errorAttribs;
+        return errorAttributesMap;
     }
 
 }
-

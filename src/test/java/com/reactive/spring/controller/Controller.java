@@ -2,6 +2,7 @@ package com.reactive.spring.controller;
 
 import com.reactive.spring.testConfigs.ControllersConfig;
 import io.restassured.http.ContentType;
+import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -23,31 +24,35 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.junit.Assert.assertEquals;
+import static org.springframework.http.HttpStatus.OK;
 
 //@RunWith(SpringRunner.class)
 //@WebFluxTest
-public class StepVerifierRestController extends ControllersConfig {
+public class Controller extends ControllersConfig {
 
     //DEFAULT: WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired
-    WebTestClient webTestClient;
+    WebTestClient client;
 
     final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
 
     @Before
     public void setUpLocal() {
 
-        webTestClient = webTestClient
+        client = client
                 .mutate()
-                .responseTimeout(Duration.ofMillis(60000))
+                .responseTimeout(Duration.ofMillis(75000L))
                 .build();
         //REAL-SERVER(non-blocking client)  IN WEB-TEST-CLIENT:
-        //webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:8080/dilipi").build();
+        //webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:8080/dilipi")
+        // .build();
     }
 
     @Test
-    public void blockHoundWorks() {
+    public void bHWorks() {
         try {
             FutureTask<?> task = new FutureTask<>(() -> {
                 Thread.sleep(0);
@@ -65,8 +70,8 @@ public class StepVerifierRestController extends ControllersConfig {
     }
 
     @Test
-    public void test_StepVerifier() {
-        Flux<Integer> integerFlux = webTestClient
+    public void StepVerifier() {
+        Flux<Integer> integerFlux = client
                 .get()
                 .uri("/dilipi/flux")
                 .accept(MTYPE_JSON)
@@ -86,8 +91,8 @@ public class StepVerifierRestController extends ControllersConfig {
     }
 
     @Test
-    public void test_HasSize() {
-        webTestClient
+    public void HasSize() {
+        client
                 .get()
                 .uri("/dilipi/flux")
                 .accept(MTYPE_JSON)
@@ -101,12 +106,12 @@ public class StepVerifierRestController extends ControllersConfig {
     }
 
     @Test
-    public void test_AssertEquals() {
+    public void AssertEquals() {
 
         List<Integer> expectedList = Arrays.asList(1,2,3);
 
         EntityExchangeResult<List<Integer>> result =
-                webTestClient
+                client
                         .get()
                         .uri("/dilipi/flux")
                         .accept(MTYPE_JSON)
@@ -119,12 +124,13 @@ public class StepVerifierRestController extends ControllersConfig {
         assertEquals(expectedList,result.getResponseBody());
     }
 
+    @Ignore
     @Test
-    public void test_ConsumeWith() {
+    public void ConsumeWith() {
 
         List<Integer> expectedList = Arrays.asList(1,2,3);
 
-        webTestClient
+        client
                 .get()
                 .uri("/dilipi/flux")
                 .accept(MTYPE_JSON)
@@ -137,8 +143,8 @@ public class StepVerifierRestController extends ControllersConfig {
 
     @Ignore
     @Test
-    public void test_Infinite() {
-        Flux<Long> LongFlux = webTestClient
+    public void Infinite() {
+        Flux<Long> LongFlux = client
                 .get()
                 .uri("/dilipi/flux-stream-infinite")
                 .accept(MTYPE_JSON)
@@ -159,10 +165,10 @@ public class StepVerifierRestController extends ControllersConfig {
     }
 
     @Test
-    public void test_Mono() {
+    public void Mono() {
         Integer expectedValue = 1;
 
-        webTestClient
+        client
                 .get()
                 .uri("/dilipi/mono")
                 .accept(MTYPE_JSON)
@@ -173,5 +179,30 @@ public class StepVerifierRestController extends ControllersConfig {
                 .consumeWith((response) -> {
                     assertEquals(expectedValue,response.getResponseBody());
                 });
+    }
+
+    @Test
+    public void RA() {
+        RestAssuredWebTestClient
+                .given()
+                .webTestClient(client)
+                .header("Accept",ContentType.ANY)
+                .header("Content-type",ContentType.JSON)
+
+                .when()
+                .get("flux")
+
+                .then()
+                .statusCode(OK.value())
+                .log()
+                .headers()
+                .and()
+                .log()
+                .body()
+                .and()
+
+                .body(containsString("1"))
+                .body(stringContainsInOrder("1","2","3"))
+        ;
     }
 }

@@ -7,7 +7,7 @@ import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Duration;
 
-public class VirtualTimeTest {
+public class VirtualTime {
 
     @Test
     void noVirtualTime() {
@@ -26,7 +26,7 @@ public class VirtualTimeTest {
     }
 
     @Test
-    void testVirtualTime() {
+    void VirtualTime() {
 
         VirtualTimeScheduler.getOrSet();
 
@@ -45,7 +45,7 @@ public class VirtualTimeTest {
     }
 
     @Test
-    void testVirtualTimeConcatDelay() {
+    void VirtualTimeConcat() {
 
         VirtualTimeScheduler.getOrSet();
 

@@ -1,5 +1,6 @@
 package com.reactive.spring.repo;
 
+import com.github.javafaker.Faker;
 import com.reactive.spring.entities.Item;
 import com.reactive.spring.testConfigs.MongoRepoConfig;
 import org.junit.Assert;
@@ -22,18 +23,18 @@ import java.util.concurrent.TimeoutException;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
 
-public class ItemReactiveRepoMongoTest extends MongoRepoConfig {
+public class ItemRepoTest extends MongoRepoConfig {
 
     private List<Item> itemList;
     private Item itemTest;
 
     @Autowired
-    ItemReactiveRepoMongo repo;
+    ItemRepo repo;
 
     @Before
     public void setUpLocal() {
 
-        itemTest = newItemWithIdDescPrice("ABC").create();
+        itemTest = newItemWithIdDescPrice(Faker.instance().idNumber().valid()).create();
 
         itemList = Arrays.asList(newItemWithDescPrice().create(),
                                  newItemWithDescPrice().create(),
@@ -50,7 +51,7 @@ public class ItemReactiveRepoMongoTest extends MongoRepoConfig {
 
 //    @Ignore
     @Test
-    public void blockHoundWorks() {
+    public void bHWorks() {
         try {
             FutureTask<?> task = new FutureTask<>(() -> {
                 Thread.sleep(0);
@@ -68,7 +69,7 @@ public class ItemReactiveRepoMongoTest extends MongoRepoConfig {
     }
 
     @Test
-    public void getAllTest() {
+    public void getAll() {
 
         StepVerifier
                 .create(repo.findAll())
@@ -80,7 +81,7 @@ public class ItemReactiveRepoMongoTest extends MongoRepoConfig {
     @Test
     public void getById() {
         StepVerifier
-                .create(repo.findById("ABC"))
+                .create(repo.findById(itemTest.getId()))
                 .expectSubscription()
                 .expectNextMatches(item -> item.getDescription()
                                                .equals(itemTest.getDescription()))
@@ -88,8 +89,7 @@ public class ItemReactiveRepoMongoTest extends MongoRepoConfig {
     }
 
     @Test
-    public void getItemByDescription() {
-        itemTest.setDescription("AAAAA");
+    public void getByDescription() {
         StepVerifier
                 .create(repo.findByDescription(itemTest.getDescription())
                             .log("getItemDescription: "))
@@ -99,7 +99,7 @@ public class ItemReactiveRepoMongoTest extends MongoRepoConfig {
     }
 
     @Test
-    public void saveItem() {
+    public void save() {
         Mono<Item> savedItem = repo.save(itemTest);
         StepVerifier.create(savedItem.log("savedItem : "))
                     .expectSubscription()
@@ -110,8 +110,8 @@ public class ItemReactiveRepoMongoTest extends MongoRepoConfig {
     }
 
     @Test
-    public void updateItem() {
-        double newPrice = 520.00;
+    public void update() {
+        double newPrice = 52.00;
         Mono<Item> updatedItem =
                 repo
                         .findByDescription(itemTest.getDescription())
@@ -130,7 +130,7 @@ public class ItemReactiveRepoMongoTest extends MongoRepoConfig {
     }
 
     @Test
-    public void deleteItemById() {
+    public void deleteById() {
         Mono<Void> deletedItem =
                 repo.findById(itemTest.getId())
                 .map(Item::getId)

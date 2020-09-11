@@ -1,4 +1,4 @@
-package com.reactive.spring.handler;
+package com.reactive.spring.handler_CRUD;
 
 import com.reactive.spring.router.PlaygroundRouter;
 import com.reactive.spring.testConfigs.HandlerConfig;
@@ -22,11 +22,11 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration(classes = {PlaygroundRouter.class,PlaygroundHandler.class})
-public class HandlerTest extends HandlerConfig {
+public class Handler extends HandlerConfig {
 
     //DEFAULT: WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired
-    WebTestClient webTestClient;
+    WebTestClient client;
 
     @Before
     public void setUpLocal() {
@@ -36,7 +36,7 @@ public class HandlerTest extends HandlerConfig {
     }
 
     @Test
-    public void blockHoundWorks() {
+    public void bHWorks() {
         try {
             FutureTask<?> task = new FutureTask<>(() -> {
                 Thread.sleep(0);
@@ -55,7 +55,7 @@ public class HandlerTest extends HandlerConfig {
 
     @Test
     public void flux() {
-        Flux<Integer> integerFlux = webTestClient
+        Flux<Integer> integerFlux = client
                 .get()
                 .uri("/functional/flux")
                 .accept(MediaType.APPLICATION_JSON)
@@ -76,9 +76,9 @@ public class HandlerTest extends HandlerConfig {
 
     @Test
     public void mono() {
-        Integer expectedValue = new Integer(1);
+        Integer expectedValue = 1;
 
-        webTestClient
+        client
                 .get()
                 .uri("/functional/mono")
                 .accept(MediaType.APPLICATION_JSON)

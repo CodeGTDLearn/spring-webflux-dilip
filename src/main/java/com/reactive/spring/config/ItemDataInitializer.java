@@ -1,7 +1,7 @@
 package com.reactive.spring.config;
 
 import com.reactive.spring.entities.Item;
-import com.reactive.spring.repo.ItemReactiveRepoMongo;
+import com.reactive.spring.repo.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ItemDataInitializer implements CommandLineRunner {
 
     @Autowired
-    ItemReactiveRepoMongo repo;
+    ItemRepo repo;
 
 
     @Override

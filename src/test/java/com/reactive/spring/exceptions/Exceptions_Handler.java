@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
+import static com.reactive.spring.config.MappingsHandler.VERS_FUNCT_ENDPT_EXCEPT;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -20,45 +20,44 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @DirtiesContext
 @AutoConfigureWebTestClient
 @ActiveProfiles("test")
-public class ControllerCustomExceptionTest {
+public class Exceptions_Handler {
     @Autowired
-    WebTestClient webTestClient;
-
+    WebTestClient client;
     @Test
-    public void runTimeExceptionTest_isEqual() {
-        webTestClient
+    public void isEqual() {
+        client
                 .get()
-                .uri(VERSION + REQ_MAP + EXCEPTION)
+                .uri(VERS_FUNCT_ENDPT_EXCEPT)
                 .exchange()
                 .expectStatus().is5xxServerError()
                 .expectBody(String.class)
-                .isEqualTo("RuntimeException Occured!");
+                .isEqualTo("RuntimeException Ocurred - Functional Handler");
     }
 
     @Test
-    public void runTimeExceptionTest_JSONpath() {
-        webTestClient
+    public void JSONpath() {
+        client
                 .get()
-                .uri(VERSION + REQ_MAP + EXCEPTION)
+                .uri(VERS_FUNCT_ENDPT_EXCEPT)
                 .exchange()
                 .expectStatus().is5xxServerError()
                 .expectBody()
-                .jsonPath("$.message","RuntimeException Occured!");
+                .jsonPath("$.message","RuntimeException Ocurred - Functional Handler");
     }
 
     @Test
-    public void runTimeExceptionTest_RestAssuredWebTestClient() {
+    public void RA() {
         RestAssuredWebTestClient
                 .given()
-                .webTestClient(webTestClient)
+                .webTestClient(client)
 
                 .when()
-                .get(VERSION + REQ_MAP + EXCEPTION)
+                .get(VERS_FUNCT_ENDPT_EXCEPT)
 
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.value())
 
-                .body(equalTo("RuntimeException Occured!"))
+                .body(equalTo("RuntimeException Ocurred - Functional Handler"))
         ;
     }
 }

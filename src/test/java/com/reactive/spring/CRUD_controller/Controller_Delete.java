@@ -3,7 +3,7 @@ package com.reactive.spring.CRUD_controller;
 
 import com.github.javafaker.Faker;
 import com.reactive.spring.entities.Item;
-import com.reactive.spring.repo.ItemReactiveRepoMongo;
+import com.reactive.spring.repo.ItemRepo;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,11 +21,9 @@ import reactor.core.publisher.Flux;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.github.javafaker.Faker.instance;
 import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest
@@ -33,24 +31,23 @@ import static org.springframework.http.HttpStatus.OK;
 @DirtiesContext
 @AutoConfigureWebTestClient
 @ActiveProfiles("test")
-public class GetById_Test {
+public class Controller_Delete {
 
     @Autowired
-    WebTestClient webTestClient;
+    WebTestClient client;
 
     private List<Item> itemList;
     private Item itemTest;
 
     @Autowired
-    ItemReactiveRepoMongo repo;
+    ItemRepo repo;
+
     final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
 
     @Before
     public void setUpLocal() {
 
-        itemTest = newItemWithIdDescPrice(Faker.instance()
-                                               .idNumber()
-                                               .valid()).create();
+        itemTest = newItemWithIdDescPrice(Faker.instance().idNumber().valid()).create();
 
         itemList = Arrays.asList(newItemWithDescPrice().create(),
                                  newItemWithDescPrice().create(),
@@ -66,43 +63,28 @@ public class GetById_Test {
     }
 
     @Test
-    public void getById_jsonPath() {
-        webTestClient
-                .get()
+    public void webTestClient() {
+        client
+                .delete()
                 .uri(VERSION + REQ_MAP + ID_PATH,itemTest.getId())
+                .accept(MTYPE_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectHeader()
-                .contentType(MTYPE_JSON)
-                .expectBody()
-                .jsonPath("$.price",itemTest.getPrice());
+                .expectBody(Void.class);
     }
 
     @Test
-    public void getById_jsonPath_notfound() {
-        webTestClient
-                .get()
-                .uri(VERSION + REQ_MAP + ID_PATH,instance().idNumber()
-                                                           .valid())
-                .exchange()
-                .expectStatus()
-                .isNotFound();
-    }
-
-    @Test
-    public void getById_RestAssuredWebTestClient() {
+    public void RA() {
         RestAssuredWebTestClient
                 .given()
-                .webTestClient(webTestClient)
+                .webTestClient(client)
 
                 .when()
-                .get(VERSION + REQ_MAP + ID_PATH,itemTest.getId())
+                .delete(VERSION + REQ_MAP + ID_PATH,itemTest.getId())
 
                 .then()
                 .statusCode(OK.value())
-
-                .body("description",is(itemTest.getDescription()))
         ;
     }
 }

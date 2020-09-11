@@ -1,6 +1,5 @@
 package com.reactive.spring.testConfigs;
 
-import com.reactive.spring.CRUD_handler.Delete_Test;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
@@ -15,9 +14,6 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import reactor.blockhound.BlockHound;
-
-import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 //*********************************************
 //**        ++++ OBSERVATION 01 ++++         **
@@ -52,7 +48,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 public class ControllersConfig {
 
     final private static String BASE_PATH = "http://localhost:8080/dilipi";
-    final private static Long MAX_TIMEOUT = 50000L;
+    final private static Long MAX_TIMEOUT = 70000L;
     final private static ContentType API_CONTENT_TYPE = ContentType.JSON;
 
     @BeforeClass

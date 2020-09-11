@@ -1,6 +1,6 @@
 package com.reactive.spring.router;
 
-import com.reactive.spring.handler.ItemsHandler;
+import com.reactive.spring.handler_CRUD.CRUD.ItemsHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;

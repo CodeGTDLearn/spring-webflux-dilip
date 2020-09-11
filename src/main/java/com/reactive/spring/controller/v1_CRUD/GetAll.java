@@ -17,7 +17,7 @@ import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
 public class GetAll {
 
 //    @Autowired
-//    ItemReactiveRepoMongo repo;
+//    ItemRepo repo;
 
     @Autowired
     ItemService service;

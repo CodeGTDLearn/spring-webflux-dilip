@@ -2,8 +2,7 @@ package com.reactive.spring.CRUD_handler;
 
 import com.github.javafaker.Faker;
 import com.reactive.spring.entities.Item;
-import com.reactive.spring.repo.ItemReactiveRepoMongo;
-import io.restassured.http.ContentType;
+import com.reactive.spring.repo.ItemRepo;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import lombok.var;
 import org.junit.Before;
@@ -18,7 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,21 +32,18 @@ import static org.springframework.http.HttpStatus.OK;
 @DirtiesContext
 @AutoConfigureWebTestClient
 @ActiveProfiles("test")
-public class Update_Test {
+public class Handler_Delete {
 
     @Autowired
-    WebTestClient webTestClient;
+    WebTestClient client;
 
     private List<Item> itemList;
     private Item itemTest;
 
     @Autowired
-    ItemReactiveRepoMongo repo;
+    ItemRepo repo;
 
     final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
-    final ContentType CONT_ANY = ContentType.ANY;
-    final ContentType CONT_JSON = ContentType.JSON;
-
 
     @Before
     public void setUpLocal() {
@@ -72,61 +67,27 @@ public class Update_Test {
     }
 
     @Test
-    public void update_jsonPath() {
-        itemTest.setPrice(Faker.instance()
-                               .random()
-                               .nextDouble());
-        webTestClient
-                .put()
+    public void webTestClient() {
+        client
+                .delete()
                 .uri(VERS_FUNCT_ENDPT_ID,itemTest.getId())
-                .contentType(MTYPE_JSON)
                 .accept(MTYPE_JSON)
-                .body(Mono.just(itemTest),Item.class)
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody()
-                .jsonPath("$.price",itemTest.getPrice());
+                .expectBody(Void.class);
     }
 
     @Test
-    public void update_jsonPath_notfound() {
-        webTestClient
-                .put()
-                .uri(VERS_FUNCT_ENDPT_ID,Faker.instance()
-                                                      .random()
-                                                      .hex())
-                .contentType(MTYPE_JSON)
-                .accept(MTYPE_JSON)
-                .body(Mono.just(itemTest),Item.class)
-                .exchange()
-                .expectStatus()
-                .isNotFound();
-    }
-
-    @Test
-    public void update_RestAssuredWebTestClient() {
-        itemTest.setPrice(Faker.instance()
-                               .random()
-                               .nextDouble());
-
+    public void RA() {
         RestAssuredWebTestClient
                 .given()
-                .webTestClient(webTestClient)
-                .header("Accept",CONT_ANY)
-                .header("Content-type",CONT_JSON)
-                .body(itemTest)
+                .webTestClient(client)
 
                 .when()
-                .put(VERS_FUNCT_ENDPT_ID,itemTest.getId())
+                .delete(VERS_FUNCT_ENDPT_ID,itemTest.getId())
 
                 .then()
-                .log()
-                .headers()
-                .and()
-                .log()
-                .body()
-                .and()
                 .statusCode(OK.value())
         ;
     }

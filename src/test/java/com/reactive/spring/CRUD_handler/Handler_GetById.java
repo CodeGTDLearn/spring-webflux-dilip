@@ -1,8 +1,7 @@
 package com.reactive.spring.CRUD_handler;
 
-import com.github.javafaker.Faker;
 import com.reactive.spring.entities.Item;
-import com.reactive.spring.repo.ItemReactiveRepoMongo;
+import com.reactive.spring.repo.ItemRepo;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import lombok.var;
 import org.junit.Before;
@@ -21,6 +20,7 @@ import reactor.core.publisher.Flux;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.github.javafaker.Faker.*;
 import static com.reactive.spring.config.MappingsHandler.VERS_FUNCT_ENDPT_ID;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
@@ -32,24 +32,24 @@ import static org.springframework.http.HttpStatus.OK;
 @DirtiesContext
 @AutoConfigureWebTestClient
 @ActiveProfiles("test")
-public class Delete_Test {
+public class Handler_GetById {
 
     @Autowired
-    WebTestClient webTestClient;
+    WebTestClient client;
 
     private List<Item> itemList;
     private Item itemTest;
 
     @Autowired
-    ItemReactiveRepoMongo repo;
+    ItemRepo repo;
 
     final MediaType MTYPE_JSON = MediaType.APPLICATION_JSON;
 
     @Before
     public void setUpLocal() {
-        var ItemTestId = Faker.instance()
-                              .idNumber()
-                              .valid();
+        var ItemTestId = instance()
+                .idNumber()
+                .valid();
 
         itemTest = newItemWithIdDescPrice(ItemTestId).create();
 
@@ -66,29 +66,45 @@ public class Delete_Test {
             .blockLast(); // THATS THE WHY, BLOCKHOUND IS NOT BEING USED.
     }
 
+
     @Test
-    public void delete() {
-        webTestClient
-                .delete()
-                .uri(VERS_FUNCT_ENDPT_ID, itemTest.getId())
-                .accept(MTYPE_JSON)
+    public void jsonPath() {
+        client
+                .get()
+                .uri(VERS_FUNCT_ENDPT_ID,itemTest.getId())
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(Void.class);
+                .expectHeader()
+                .contentType(MTYPE_JSON)
+                .expectBody()
+                .jsonPath("$.price",itemTest.getPrice());
     }
 
     @Test
-    public void delete_RestAssuredWebTestClient() {
+    public void jsonPath_notfound() {
+        client
+                .get()
+                .uri(VERS_FUNCT_ENDPT_ID,instance().idNumber()
+                                                   .valid())
+                .exchange()
+                .expectStatus()
+                .isNotFound();
+    }
+
+    @Test
+    public void RA() {
         RestAssuredWebTestClient
                 .given()
-                .webTestClient(webTestClient)
+                .webTestClient(client)
 
                 .when()
-                .delete(VERS_FUNCT_ENDPT_ID, itemTest.getId())
+                .get(VERS_FUNCT_ENDPT_ID,itemTest.getId())
 
                 .then()
                 .statusCode(OK.value())
+
+                .body("description",is(itemTest.getDescription()))
         ;
     }
 }
