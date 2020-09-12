@@ -1,5 +1,6 @@
 package com.reactive.spring.exceptions;
 
+import com.github.javafaker.Faker;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import java.time.Duration;
 import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -29,40 +31,29 @@ public class Exceptions_Controller {
 
 
     @Test
-    public void isEqual() {
+    public void Delete_404_JSONpath() {
         client
-                .get()
-                .uri(VERSION + REQ_MAP + EXCEPTION)
+                .delete()
+                .uri(VERSION + REQ_MAP + ID_PATH,Faker.instance().idNumber().valid())
                 .exchange()
-                .expectStatus().is5xxServerError()
-                .expectBody(String.class)
-                .isEqualTo("RuntimeException Occured!");
-    }
-
-    @Test
-    public void JSONpath() {
-        client
-                .get()
-                .uri(VERSION + REQ_MAP + EXCEPTION)
-                .exchange()
-                .expectStatus().is5xxServerError()
+                .expectStatus().is4xxClientError()
                 .expectBody()
-                .jsonPath("$.message","RuntimeException Occured!");
+                .jsonPath("$.mensagem","404 NOT_FOUND \"Item Not found\"");
     }
 
     @Test
-    public void RA() {
+    public void GetById_404_RA() {
         RestAssuredWebTestClient
                 .given()
                 .webTestClient(client)
 
                 .when()
-                .get(VERSION + REQ_MAP + EXCEPTION)
+                .get(VERSION + REQ_MAP + ID_PATH,Faker.instance().idNumber().valid())
 
                 .then()
-                .statusCode(INTERNAL_SERVER_ERROR.value())
+                .statusCode(NOT_FOUND.value())
 
-                .body("developerMensagem" ,equalTo("RuntimeException Occured!"))
+                .body("developerMensagem" ,equalTo("Custom Attrib - An Error Happens!"))
         ;
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.OK;
 
 
 @RestController
@@ -18,24 +18,13 @@ import static org.springframework.http.HttpStatus.*;
 //@AllArgsConstructor
 public class Update {
 
-    //    @Autowired
-    //    ItemRepo repo;
-
     @Autowired
     ItemService service;
 
     @PutMapping(ID_PATH)
     public Mono<ResponseEntity<Item>> update(@PathVariable String id,@RequestBody Item item) {
-        return service
-                .getById(id)
-                .flatMap((currentItem) -> {
-                    currentItem.setPrice(item.getPrice());
-                    currentItem.setDescription(item.getDescription());
-                    return service.save(currentItem);
-                })
-                .map(updatedItem -> new ResponseEntity<>(updatedItem,OK))
-                .defaultIfEmpty(new ResponseEntity<>(NOT_FOUND));
+        return service.update(id,item)
+                      .map(updatedItem -> new ResponseEntity<>(updatedItem,OK));
     }
-
-
 }
+

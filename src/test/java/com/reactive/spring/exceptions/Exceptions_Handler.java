@@ -31,7 +31,7 @@ public class Exceptions_Handler {
                 .exchange()
                 .expectStatus().is5xxServerError()
                 .expectBody(String.class)
-                .isEqualTo("RuntimeException Ocurred - Functional Handler");
+                .isEqualTo("Custom Attrib - An Error Happens!");
     }
 
     @Test
@@ -42,7 +42,7 @@ public class Exceptions_Handler {
                 .exchange()
                 .expectStatus().is5xxServerError()
                 .expectBody()
-                .jsonPath("$.message","RuntimeException Ocurred - Functional Handler");
+                .jsonPath("$.message","Custom Attrib - An Error Happens!");
     }
 
     @Test
@@ -57,7 +57,7 @@ public class Exceptions_Handler {
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.value())
 
-                .body(equalTo("RuntimeException Ocurred - Functional Handler"))
+                .body(equalTo("Custom Attrib - An Error Happens!"))
         ;
     }
 }

@@ -17,9 +17,6 @@ import static org.springframework.http.HttpStatus.*;
 //@AllArgsConstructor
 public class Save {
 
-//    @Autowired
-//    ItemRepo repo;
-
     @Autowired
     ItemService service;
 

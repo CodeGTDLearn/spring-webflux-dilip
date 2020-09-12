@@ -24,7 +24,7 @@ public class CustomAttributes extends DefaultErrorAttributes {
             ResponseStatusException ex = (ResponseStatusException) throwable;
 
             errorAttributesMap.put("mensagem" ,ex.getMessage());
-            errorAttributesMap.put("developerMensagem" ,"A ResponseStatusException happened!!!");
+            errorAttributesMap.put("developerMensagem" ,"Custom Attrib - An Error Happens!");
         }
         return errorAttributesMap;
     }

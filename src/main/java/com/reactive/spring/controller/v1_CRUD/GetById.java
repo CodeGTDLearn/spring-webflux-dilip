@@ -21,9 +21,6 @@ import static org.springframework.http.HttpStatus.OK;
 //@AllArgsConstructor
 public class GetById {
 
-    //    @Autowired
-    //    ItemRepo repo;
-
     @Autowired
     ItemService service;
 
