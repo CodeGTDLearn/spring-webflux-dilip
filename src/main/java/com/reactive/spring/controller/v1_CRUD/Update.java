@@ -22,6 +22,7 @@ public class Update {
     ItemService service;
 
     @PutMapping(ID_PATH)
+    @ResponseStatus(OK)
     public Mono<ResponseEntity<Item>> update(@PathVariable String id,@RequestBody Item item) {
         return service.update(id,item)
                       .map(updatedItem -> new ResponseEntity<>(updatedItem,OK));

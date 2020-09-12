@@ -1,4 +1,4 @@
-package com.reactive.spring.handler_CRUD;
+package com.reactive.spring.handler;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;

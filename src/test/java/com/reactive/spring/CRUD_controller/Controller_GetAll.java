@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -53,6 +54,8 @@ public class Controller_GetAll {
 
     @Before
     public void setUpLocal() {
+        VirtualTimeScheduler.getOrSet();
+
         item = newItemWithIdDescPrice("ABC").create();
 
         itemList = Arrays.asList(newItemWithDescPrice().create(),
@@ -71,12 +74,14 @@ public class Controller_GetAll {
     @Test
     public void HasSize() {
         client
+
                 .get()
                 .uri(VERSION + REQ_MAP)
                 .exchange()
                 .expectHeader()
                 .contentType(MTYPE_JSON)
                 .expectBodyList(Item.class)
+
                 .hasSize(4);
     }
 

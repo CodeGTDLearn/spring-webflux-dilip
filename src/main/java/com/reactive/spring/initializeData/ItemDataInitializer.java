@@ -1,10 +1,13 @@
-package com.reactive.spring.config;
+package com.reactive.spring.initializeData;
 
 import com.reactive.spring.entities.Item;
+import com.reactive.spring.entities.ItemCapped;
 import com.reactive.spring.repo.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.core.CollectionOptions;
+import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -18,12 +21,28 @@ public class ItemDataInitializer implements CommandLineRunner {
     @Autowired
     ItemRepo repo;
 
+    @Autowired
+    ReactiveMongoOperations mongoOps;
+
 
     @Override
     public void run(String... args) {
         initialDataSetupLoadDataInMongoDb();
+        createCappedColletction();
     }
 
+
+    private void createCappedColletction() {
+        mongoOps.dropCollection(ItemCapped.class);
+        mongoOps.createCollection(ItemCapped.class,
+                                  CollectionOptions
+                                          .empty()
+                                          .maxDocuments(20)
+                                          .size(5000)
+                                          .capped()
+                                 );
+
+    }
 
     private List<Item> loadData() {
         return Arrays.asList(

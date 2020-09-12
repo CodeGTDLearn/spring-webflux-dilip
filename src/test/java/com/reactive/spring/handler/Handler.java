@@ -1,9 +1,10 @@
-package com.reactive.spring.handler_CRUD;
+package com.reactive.spring.handler;
 
 import com.reactive.spring.router.PlaygroundRouter;
 import com.reactive.spring.testConfigs.HandlerConfig;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,6 +36,7 @@ public class Handler extends HandlerConfig {
         // .build();
     }
 
+    @Ignore
     @Test
     public void bHWorks() {
         try {

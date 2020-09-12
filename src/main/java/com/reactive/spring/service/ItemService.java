@@ -34,19 +34,19 @@ public class ItemService {
     public Mono<Void> delete(String id) {
         return repo
                 .findById(id)
-                .flatMap(repo::delete)
-                .switchIfEmpty(ItemNotFoundException());
+                .switchIfEmpty(ItemNotFoundException())
+                .flatMap(repo::delete);
     }
 
     public Mono<Item> update(String id, Item item) {
         return repo
                 .findById(id)
-                .flatMap((currentItem) -> {
-                    currentItem.setPrice(item.getPrice());
-                    currentItem.setDescription(item.getDescription());
-                    return repo.save(currentItem);
-                })
-                .switchIfEmpty(ItemNotFoundException());
+                .switchIfEmpty(ItemNotFoundException())
+                .flatMap((foundItem) -> {
+                    foundItem.setPrice(item.getPrice());
+                    foundItem.setDescription(item.getDescription());
+                    return repo.save(foundItem);
+                });
     }
 
     public <T> Mono<T> ItemNotFoundException() {

@@ -29,8 +29,6 @@ import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.http.HttpStatus.OK;
 
-//@RunWith(SpringRunner.class)
-//@WebFluxTest
 public class Controller extends ControllersConfig {
 
     //DEFAULT: WEB-TEST-CLIENT WITH MOCK-SERVER
@@ -51,6 +49,7 @@ public class Controller extends ControllersConfig {
         // .build();
     }
 
+    @Ignore
     @Test
     public void bHWorks() {
         try {

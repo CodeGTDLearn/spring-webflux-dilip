@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
+import static org.springframework.http.HttpStatus.OK;
 
 
 @RestController
@@ -20,6 +21,7 @@ public class GetAll {
     ItemService service;
 
     @GetMapping
+    @ResponseStatus(OK)
     public Flux<Item> getAllItems() {
         return service.getAll();
     }

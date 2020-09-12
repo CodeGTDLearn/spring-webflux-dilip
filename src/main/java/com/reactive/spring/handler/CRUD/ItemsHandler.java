@@ -1,7 +1,6 @@
-package com.reactive.spring.handler_CRUD.CRUD;
+package com.reactive.spring.handler.CRUD;
 
 import com.reactive.spring.entities.Item;
-import com.reactive.spring.repo.ItemRepo;
 import com.reactive.spring.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,9 +16,6 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 
 @Component
 public class ItemsHandler {
-
-//    @Autowired
-//    ItemRepo repo;
 
     @Autowired
     ItemService service;
@@ -54,24 +50,14 @@ public class ItemsHandler {
     public Mono<ServerResponse> update(ServerRequest request) {
         String id = request.pathVariable(ID);
 
-        Mono<Item> updatedItem = request
-                .bodyToMono(Item.class)
-                .flatMap(item -> {
-                    Mono<Item> itemMono = service
-                            .getById(id)
-                            .flatMap(currentItem -> {
-                                currentItem.setDescription(item.getDescription());
-                                currentItem.setPrice(item.getPrice());
-                                return service.save(currentItem);
-                            });
-                    return itemMono;
-                });
+        Mono<Item> updatedItem =
+                request.bodyToMono(Item.class)
+                       .flatMap((requestBody -> service.update(id,requestBody)));
 
-        return updatedItem.flatMap(item -> ServerResponse
-                .ok()
-                .contentType(MTYPE_JSON)
-                .body(fromValue(item)))
-                          .switchIfEmpty(notFound().build());
+        return updatedItem
+                .flatMap(item -> ok()
+                        .contentType(MTYPE_JSON)
+                        .body(fromValue(item)));
     }
 
     public Mono<ServerResponse> save(ServerRequest request) {

@@ -4,6 +4,7 @@ package com.reactive.spring.CRUD_controller;
 import com.github.javafaker.Faker;
 import com.reactive.spring.entities.Item;
 import com.reactive.spring.repo.ItemRepo;
+import com.reactive.spring.service.ItemService;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,7 @@ import java.util.List;
 import static com.reactive.spring.config.MappingsController_v1_CRUD.*;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithDescPrice;
 import static com.reactive.spring.databuilder.ObjectMotherItem.newItemWithIdDescPrice;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest
@@ -57,6 +59,7 @@ public class Controller_Delete {
 
         repo.deleteAll()
             .thenMany(Flux.fromIterable(itemList))
+//            .flatMap(repo::save)
             .flatMap(repo::save)
             .doOnNext((item -> System.out.println("Inserted item is - TEST: " + item)))
             .blockLast(); // THATS THE WHY, BLOCKHOUND IS NOT BEING USED.
@@ -70,7 +73,7 @@ public class Controller_Delete {
                 .accept(MTYPE_JSON)
                 .exchange()
                 .expectStatus()
-                .isOk()
+                .isNoContent()
                 .expectBody(Void.class);
     }
 
@@ -84,7 +87,7 @@ public class Controller_Delete {
                 .delete(VERSION + REQ_MAP + ID_PATH,itemTest.getId())
 
                 .then()
-                .statusCode(OK.value())
+                .statusCode(NO_CONTENT.value())
         ;
     }
 }
