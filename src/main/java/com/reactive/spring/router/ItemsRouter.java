@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static com.reactive.spring.config.MappingsHandler.*;
+import static com.reactive.spring.config.MappingsStream.STREAM_ENDPOINT_FUNC;
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 
 
@@ -25,9 +26,6 @@ public class ItemsRouter {
                 .andRoute(GET(VERS_FUNCT_ENDPT_ID).and(accept(JSON)),handler::getById)
                 .andRoute(DELETE(VERS_FUNCT_ENDPT_ID).and(accept(JSON)),handler::delete)
                 .andRoute(PUT(VERS_FUNCT_ENDPT_ID).and(accept(JSON)),handler::update)
-
-                //.andRoute(PUT(VERS_FUNCT_ENDPT_EXCEPT).and(accept(JSON)),
-                //itemsHandler::except)
                 ;
     }
 
@@ -35,6 +33,12 @@ public class ItemsRouter {
     public RouterFunction<ServerResponse> errorRoute(ItemsHandler handler) {
         return RouterFunctions
                 .route(GET(VERS_FUNCT_ENDPT_EXCEPT).and(accept(JSON)),handler::except);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> itemStreamRoute(ItemsHandler handler) {
+        return RouterFunctions
+                .route(GET(STREAM_ENDPOINT_FUNC).and(accept(JSON)),handler::itemStream);
     }
 
 }

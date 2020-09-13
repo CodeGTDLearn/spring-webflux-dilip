@@ -23,7 +23,7 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration(classes = {PlaygroundRouter.class,PlaygroundHandler.class})
-public class Handler extends HandlerConfig {
+public class ItemHandler extends HandlerConfig {
 
     //DEFAULT: WEB-TEST-CLIENT WITH MOCK-SERVER
     @Autowired
