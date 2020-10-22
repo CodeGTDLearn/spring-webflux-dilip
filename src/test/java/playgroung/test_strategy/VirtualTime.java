@@ -1,4 +1,4 @@
-package com.reactive.spring.test_strategy;
+package playgroung.test_strategy;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;

@@ -1,4 +1,4 @@
-package com.reactive.spring.playgroung.infinite_loop;
+package playgroung.infinite_loop;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;

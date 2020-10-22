@@ -1,4 +1,4 @@
-package com.reactive.spring.playgroung.flux;
+package playgroung.flux;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;

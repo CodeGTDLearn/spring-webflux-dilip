@@ -1,4 +1,4 @@
-package com.reactive.spring.playgroung.transformers;
+package playgroung.transformers;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;

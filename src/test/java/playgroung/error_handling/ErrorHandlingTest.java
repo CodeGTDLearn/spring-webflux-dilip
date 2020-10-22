@@ -1,4 +1,4 @@
-package com.reactive.spring.playgroung.error_handling;
+package playgroung.error_handling;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;

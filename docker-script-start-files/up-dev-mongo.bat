@@ -1,5 +1,8 @@
 echo on
-REM MAVEN-CLEAN-PACKAGE WITHOUT TESTS
+echo on
+REM SETTING JDK11 AS DEFAULT
+set JAVA_HOME=C:\Program Files\java\AdoptOpenJDK-11.0.8+10
+
 cd ..
 call mvn clean package -DskipTests
 cd docker-script-start-files

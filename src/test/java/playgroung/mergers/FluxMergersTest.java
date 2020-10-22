@@ -1,4 +1,4 @@
-package com.reactive.spring.playgroung.mergers;
+package playgroung.mergers;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;

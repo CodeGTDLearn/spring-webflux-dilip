@@ -35,8 +35,8 @@ public class ItemDataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         initialDataSetupLoadDataInMongoDb();
-        createCappedCollection();
-        dataSetupCappedCollection();
+//        createCappedCollection();
+//        dataSetupCappedCollection();
     }
 
     private void dataSetupCappedCollection() {

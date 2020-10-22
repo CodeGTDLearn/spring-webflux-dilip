@@ -1,4 +1,4 @@
-package com.reactive.spring.playgroung.backpressure;
+package playgroung.backpressure;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.BaseSubscriber;

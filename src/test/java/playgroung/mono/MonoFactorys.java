@@ -1,4 +1,4 @@
-package com.reactive.spring.playgroung.mono;
+package playgroung.mono;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
