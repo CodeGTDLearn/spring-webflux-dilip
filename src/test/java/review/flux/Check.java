@@ -1,25 +1,45 @@
-package review;
+package review.flux;
 
 import org.junit.Test;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-public class CheckingFluxTest {
+public class Check {
 
     @Test
     public void fluxTest() {
-        Flux<String> myFlow = Flux
-                .just("Paulo","Cintia","Ligia")
-                //                .concatWith(Flux.error(new RuntimeException("Excetion
-                //                Occured!!!")))
-                .concatWith(Flux.just("Completed - OK - Flux concatened"))
-                .log();
+        //A) Montagem de um Fluxo/Publisher de Strings:
+        Flux<String> myFlow =
 
+                // 1-Inseri alguns Strings no fluxo
+                Flux.just("Paulo","Cintia","Ligia")
+
+                    // 2-Concat. o 1º fluxo, c/ um 2º fluxo(sendo este ultimo
+                    // carregado com erro)
+                    //.concatWith(Flux.error(new RuntimeException("Excetion
+                    // Occured!!!")))
+
+                    // 3-Concat. o 1º fluxo, c/ um 2º fluxo(esse segundo carregado
+                    // com outro string)
+                    .concatWith(Flux.just("Completed - OK - Flux concatened"))
+                    .log();
+
+
+        //B) Usando o Fluxo Criado:
         myFlow
-                .subscribe(System.out::println,
-                           (error) -> System.err.println("This is the error: " + error),
-                           () -> System.out.println("Finally Completed")
+
+                // 1-Subscriber -> Subscribe no  Publisher
+                // Publisher: Flux + Mono sao implentacoes de Publisher
+                .subscribe(
+                        // 2-Aplicando SOUT nos elements carregados no Flux
+                        System.out::println,
+
+                        // 3-Lambda detectora de erro
+                        (error) -> System.err.println("This is the error: " + error),
+
+                        // 4-Lambda executada ao final (Caso erro na interrompa o Flux)
+                        () -> System.out.println("Finally Completed")
                           );
 
     }
@@ -29,7 +49,7 @@ public class CheckingFluxTest {
 
         Flux<String> flow = Flux
                 .just("Primeiro","Segundo")
-                //                .concatWith(Flux.error(new RuntimeException("Break out")))
+                //.concatWith(Flux.error(new RuntimeException("Break out")))
                 .concatWith(Flux.just("Last one"))
                 .log();
 
