@@ -1,4 +1,4 @@
-package review.flux;
+package review;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -9,17 +9,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
-public class PipelineDbHttpFlatmap {
+public class FluxMonoFlatmapUsaEvents {
 
     //***************************************************//
-    //**       DIFERENCA ENTRE 'MAP' E 'FLATMAP'       **
+    //**       'MAP' E 'FLATMAP'(TRANSFORMADORES)      **
     //***************************************************
     //**      FLATMAP EXECUTA METODOS QUE 'RETORNAM'   **
     //**     MONO OU FLUX, EX:  DAO-BD + REST-HTTP     **
     //***************************************************
     //**              FLATMAP SEQUENTIAL               **
-    //**         RETORNA RESULTADO ORDENADO            **
-    //**    E MAIS RAPIDO, POR SER THREAD PARALLEL     **
+    //**         RETORNA RESULTADO "ORDENADO"          **
+    //**    E "MAIS RAPIDO", POR SER THREAD PARALLEL   **
     //***************************************************
     //**       MAP EXECUTA METODOS QUE 'NAO RETORNAM'  **
     //**                  MONO OU FLUX                 **
@@ -47,32 +47,41 @@ public class PipelineDbHttpFlatmap {
     Flux<String> fList = Flux.fromIterable(list);
 
     @Test
-    public void flatMapd_SEM_ORDENACAO() {
+    public void flatMap_SEM_ORDENACAO() {
+        //FLATMAP DESTINADO A RESPOSTAS EXTERNAS(HTTP) + DB
 
-        //FLATMAP DESTINADO A RESPOSTAS EXTERNAS + DB
-        Flux<String> primeiroFlux = Flux.fromIterable(list);
+        // 1 - FLUX_INICIAL (letras iniciais dos nomes)
+        Flux<String> fluxDeIniciaisDeNomes = Flux.fromIterable(list);
 
+        // 2 - Flatmap executa o "findbyInitial" "USANDO" CADA
+        //     ELEMENTO do FLUX(FLUX_INICIAL )
+        final Flux<String> FluxDeNomesRetornadosPeloFindbyInicial =
+                fluxDeIniciaisDeNomes
 
-        final Flux<String> FluxAchatadoUnico =
-                primeiroFlux
-                        .flatMap(this::findbyNameRetornaSegundoFlux)
+                        //FORMATO 01: EXPRESSION LAMBDA
+                        //.flatMap(this::findbyInitialName)
+
+                        //FORMATO 02: STATEMENT LAMBDA
+                        .flatMap((i) -> {
+                            return findByInicial(i);
+                        })
                         .log();
 
         StepVerifier
-                .create(FluxAchatadoUnico)
+                .create(FluxDeNomesRetornadosPeloFindbyInicial)
                 .expectSubscription()
                 .expectNext("adam","antonio","Jenny","Janete")
                 .verifyComplete();
     }
 
     @Test
-    public void flatMap_FASTER_COM_ORDENACAO() {
+    public void flatMap_FASTER_SEQUENTIAL() {
 
         Flux<String> primeiroFlux = Flux.fromIterable(list);
 
         final Flux<String> FluxAchatadoUnico =
                 primeiroFlux
-                        .flatMapSequential(this::findbyNameRetornaSegundoFlux)
+                        .flatMapSequential(this::findByInicial)
                         .log();
 
         StepVerifier
@@ -82,7 +91,7 @@ public class PipelineDbHttpFlatmap {
                 .verifyComplete();
     }
 
-    public Flux<String> findbyNameRetornaSegundoFlux(String initial) {
+    private Flux<String> findByInicial(String initial) {
         List<String> listA = Arrays.asList("adam","antonio");
         List<String> listJ = Arrays.asList("Jenny","Janete");
         return initial.equals("A") ?

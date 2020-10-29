@@ -1,11 +1,11 @@
-package review.flux;
+package review;
 
 import org.junit.Test;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-public class Check {
+public class ReadFlux {
 
     @Test
     public void fluxTest() {
@@ -33,7 +33,8 @@ public class Check {
                 // Publisher: Flux + Mono sao implentacoes de Publisher
                 .subscribe(
                         // 2-Aplicando SOUT nos elements carregados no Flux
-                        System.out::println,
+//                        System.out::println,
+                        (item) -> System.out.println(item),
 
                         // 3-Lambda detectora de erro
                         (error) -> System.err.println("This is the error: " + error),
@@ -76,44 +77,4 @@ public class Check {
                           );
     }
 
-    @Test
-    public void fluxTest4() {
-        Flux<String> fluxo = Flux
-                .just("A","B")
-                .concatWith(Flux.error(new RuntimeException("Error1")))
-                .log();
-
-        StepVerifier
-                .create(fluxo)
-                .expectNext("A","B")
-                .expectError(RuntimeException.class)
-                .verify();
-    }
-
-    @Test
-    public void fluxTest5() {
-        Flux<String> flux = Flux
-                .just("A","B")
-                .concatWith(Flux.error(new RuntimeException("Error:")))
-                .log();
-
-        StepVerifier
-                .create(flux)
-                .expectNext("A","B")
-                .expectErrorMessage("Error:")
-                .verify();
-    }
-
-    @Test
-    public void fluxTest6() {
-        Flux<String> fl = Flux
-                .just("A")
-                .concatWith(Flux.error(new RuntimeException("Error")))
-                .log();
-
-        StepVerifier.create(fl)
-                    .expectNext("A")
-                    .expectErrorMessage("Error")
-                    .verify();
-    }
 }

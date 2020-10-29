@@ -1,4 +1,4 @@
-package review.mono;
+package review;
 
 import lombok.var;
 import org.junit.Test;
@@ -6,7 +6,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-public class Check {
+public class ReadMono {
 
     @Test
     public void monoTest1() {
@@ -20,6 +20,7 @@ public class Check {
                     .log();
 
         StepVerifier.create(monoFlow)
+                    .expectSubscription()
                     .expectNext("A")
                     .verifyComplete();
     }
@@ -29,6 +30,7 @@ public class Check {
 
         StepVerifier
                 .create(Mono.error(new RuntimeException("ErrorMono")).log())
+                .expectSubscription()
                 .expectErrorMessage("ErrorMono")
                 .verify();
 

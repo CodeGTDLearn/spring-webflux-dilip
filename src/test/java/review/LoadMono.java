@@ -1,4 +1,4 @@
-package review.mono;
+package review;
 
 import org.junit.Test;
 import reactor.core.publisher.Flux;
@@ -9,13 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class Load {
+public class LoadMono {
 
     @Test
     public void monoEmptyOrJust1() {
         Mono<String> mono = Mono.justOrEmpty(null);
         StepVerifier
                 .create(mono.log())
+                .expectSubscription()
                 .verifyComplete();
     }
 
@@ -24,6 +25,7 @@ public class Load {
         Mono<String> mono = Mono.justOrEmpty(null);
         StepVerifier
                 .create(mono.log())
+                .expectSubscription()
                 .verifyComplete();
     }
 
@@ -32,6 +34,7 @@ public class Load {
         Mono<String> mono = Mono.justOrEmpty(null);
         StepVerifier
                 .create(mono.log())
+                .expectSubscription()
                 .verifyComplete();
     }
 
@@ -41,6 +44,7 @@ public class Load {
         Mono<String> mono = Mono.fromSupplier(supplier);
         StepVerifier
                 .create(mono.log())
+                .expectSubscription()
                 .expectNext("adam")
                 .verifyComplete();
     }
@@ -51,6 +55,7 @@ public class Load {
         Mono<String> mn = Mono.fromSupplier(spl);
         StepVerifier
                 .create(mn.log())
+                .expectSubscription()
                 .expectNext("adam")
                 .verifyComplete();
     }
@@ -61,6 +66,7 @@ public class Load {
         Mono<String> mn = Mono.fromSupplier(sp);
         StepVerifier
                 .create(mn.log())
+                .expectSubscription()
                 .expectNext("adam")
                 .verifyComplete();
     }

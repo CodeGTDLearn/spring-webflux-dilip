@@ -1,4 +1,4 @@
-package review.flux;
+package review;
 
 import org.junit.Test;
 import reactor.core.publisher.Flux;
@@ -7,7 +7,7 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.List;
 
-public class PipelineOtherOriginMap {
+public class FluxMonoMapTransformaEvents {
 
     List<String> list = Arrays.asList("adam","jenny");
 
@@ -19,12 +19,15 @@ public class PipelineOtherOriginMap {
                 //2 - Cria um FLUXO
                 Flux.fromIterable(list)
 
-                    //3 - Cria a pipeline: Tranformando o FLUXO criado
-                    .map(item -> item.toUpperCase())
+                    //3 - "TRANFORMANDO" cada elemento(EM SI) do FLUXO
+                    .map(item -> {
+                        return item.toUpperCase();
+                    })
                     .log();
 
         StepVerifier
                 .create(flow)
+                .expectSubscription()
                 .expectNext("ADAM","JENNY")
                 .verifyComplete();
     }
@@ -39,6 +42,7 @@ public class PipelineOtherOriginMap {
 
         StepVerifier
                 .create(flowStorage)
+                .expectSubscription()
                 .expectNext(4,5)
                 .expectComplete();
     }
@@ -53,6 +57,7 @@ public class PipelineOtherOriginMap {
 
         StepVerifier
                 .create(pipeline)
+                .expectSubscription()
                 .expectNext("JENNY")
                 .expectComplete();
     }
@@ -68,6 +73,7 @@ public class PipelineOtherOriginMap {
 
         StepVerifier
                 .create(pipeline)
+                .expectSubscription()
                 .expectNext(4,5,4,5)
                 .verifyComplete();
 
@@ -85,6 +91,7 @@ public class PipelineOtherOriginMap {
 
         StepVerifier
                 .create(pipeline)
+                .expectSubscription()
                 .expectNext("ADAM")
                 .verifyComplete();
 
