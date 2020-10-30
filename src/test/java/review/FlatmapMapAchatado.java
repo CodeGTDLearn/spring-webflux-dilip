@@ -9,37 +9,48 @@ import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
-public class FluxMonoFlatmapUsaEvents {
+public class FlatmapMapAchatado {
 
     //***************************************************//
     //**       'MAP' E 'FLATMAP'(TRANSFORMADORES)      **
     //***************************************************
-    //**      FLATMAP EXECUTA METODOS QUE 'RETORNAM'   **
+    //**               FLATMAP 'EXECUTA'               **
+    //**      "METODOS QUE RETORNAM MONO OU FLUX"      **
+    //**          EX:   DAO-BD + REST-HTTP             **
     //**     MONO OU FLUX, EX:  DAO-BD + REST-HTTP     **
     //***************************************************
     //**              FLATMAP SEQUENTIAL               **
     //**         RETORNA RESULTADO "ORDENADO"          **
     //**    E "MAIS RAPIDO", POR SER THREAD PARALLEL   **
     //***************************************************
-    //**       MAP EXECUTA METODOS QUE 'NAO RETORNAM'  **
-    //**                  MONO OU FLUX                 **
+    //**                MAP 'EXECUTA'                  **
+    //**    METODOS QUE 'NAO RETORNAM MONO OU FLUX     **
     //***************************************************//
-    //  EXPLICACAO:
-    //  MAP: EXECUTA 'METODOS QUE NAO RETORNAM FLUX/MONO'
-    //  CASO CONTRARIO:
-    //     EX: UM 'MAP' QUE EXECUTE UM 'METODO C/ RETORNO FLUX<String>(por exemplo)'
-    //        RESULTARA EM 'publisher dobrado' --> 'Flux<Flux<String>>'
-    //           pois o MAP executou um 'Metodo c/ retorno 'Flux<String>'',
-    //           baseando-se num 'elemento advindo de outro 'Flux<String>''
+
+    // MAP: EXECUTA "METODOS QUE NAO RETORNAM FLUX/MONO"
+    // EXPLICACAO:
+    // A) 'MAP' RETORNA UM FLUX
+    // B) 'MAP' QUE EXECUTE, UM METODO QUE "TB" RETORNE UM FLUX(ex: Flux<String>)
+    //    --> RESULTARA EM 'publisher dobrado'[FluxArray] 'Flux<Flux<String>>'
+    //        Pois:
+    //           * o MAP (que retorna FLUX);
+    //           * executou um 'Metodo q/ "TAMBEM" FLUX (ex: 'Flux<String>'),
+    //               # Resultando em:   'Flux<Flux<String>>'
     //
-    //     EX. NO CODIGO
+    //     --> EX. NO CODIGO
     //  Flux<Flux<String>> fluxDobradoDuplo =
-    //         primeiroFlux
-    //                    .map(this::findbyNameRetornaSegundoFlux)
+    //         primeiroFluxRetornadoPeloMAP
+    //                    .map(this::findbyNameSegundoFluxRetornaDesteMetpdp)
     //                    .log();
 
-    // FLATMAP: EXECUTA 'METODOS QUE RETORNAM FLUX/MONO'
-    //   RESULTANDO num FLUX-FLATED(ACHATADO), ou seja 'Flux<String>'
+    // FLATMAP: EXECUTA 'METODOS QUE "RETORNAM" FLUX/MONO'
+    // EXPLICACAO:
+    // A) 'FLATMAP' RETORNA UM "MAP ACHATADO"(FLATTED-MAP)
+    // B) 'FLATMAP' QUE EXECUTE, UM METODO QUE RETORNE UM FLUX(ex: Flux<String>)
+    //    --> RESULTARA NO, FLUX DO METODO EXECUTADO (ex: Flux<String>)
+    // C) RESUMINDO:
+    //    --> 'FLATMAP' E UM 'MAP' QUE EVITA 'publisher dobrado'[FluxArray]
+    //        --> PORTANTO, RETORNANDO O FLUX DO METODO POR ELE EXECUTADO
 
 
     List<String> list = Arrays.asList("A","B");

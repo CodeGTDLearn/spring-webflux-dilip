@@ -11,16 +11,13 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import reactor.blockhound.BlockHound;
 
 
 //*********************************************
 //**        ++++ GENERAL CONFIGS ++++        **
 //*********************************************
-//@WebFluxTest
 @DataMongoTest
 @RunWith(SpringRunner.class)
 @Slf4j
@@ -60,40 +57,11 @@ public class MongoRepoConfig {
                         .expectContentType(API_CONTENT_TYPE)
                         .build();
 
-        BlockhoundLiberacao.liberarMetodos();
-        //        BlockHound
-        //                .install(builder -> builder
-        //                                 .allowBlockingCallsInside("java.io.PrintStream",
-        //                                                           "write"
-        //                                                          )
-        //                                 .allowBlockingCallsInside("java.io.FileOutputStream",
-        //                                                           "writeBytes"
-        //                                                          )
-        //                                 .allowBlockingCallsInside("java.io.BufferedOutputStream",
-        //                                                           "flushBuffer"
-        //                                                          )
-        //                                 .allowBlockingCallsInside("java.io.BufferedOutputStream",
-        //                                                           "flush"
-        //                                                          )
-        //                                 .allowBlockingCallsInside("java.io.OutputStreamWriter",
-        //                                                           "flushBuffer"
-        //                                                          )
-        //                                 .allowBlockingCallsInside("java.io.PrintStream",
-        //                                                           "print"
-        //                                                          )
-        //                                 .allowBlockingCallsInside("java.io.PrintStream",
-        //                                                           "println"
-        //                                                          )
-        //                        );
-
-    }
+        BlockhoundUtils.liberarMetodos();
+     }
 
     @AfterClass
     public static void tearDown() {
         RestAssuredWebTestClient.reset();
     }
 }
-
-
-
-

@@ -26,10 +26,24 @@ public class ExceptionHandler {
                 .verify();
     }
 
+    @Test
+    public void fluxError2() {
+        Flux<String> flux = Flux
+                .just("A","B")
+                .concatWith(Flux.error(new RuntimeException("Error:")))
+                .log();
+
+        StepVerifier
+                .create(flux)
+                .expectSubscription()
+                .expectNext("A","B")
+                .expectErrorMessage("Error:")
+                .verify();
+    }
 
 
     @Test
-    public void CustomExcecao() {
+    public void CustomExcecaoFlux() {
         Flux<String> result =
                 FluxoGeralParaTest
                         .concatWith(Flux.error(new RuntimeException("Excecao aconteceu")))
@@ -45,14 +59,15 @@ public class ExceptionHandler {
                 .expectError(CustomExcept.class)
                 .verify();
     }
-}
 
-@Getter
-@Setter
-class CustomExcept extends Throwable {
-    private String message;
+    @Getter
+    @Setter
+    class CustomExcept extends Throwable {
+        private String message;
 
-    public CustomExcept(Throwable error) {
-        this.message = error.getMessage();
+        public CustomExcept(Throwable error) {
+            this.message = error.getMessage();
+        }
     }
 }
+

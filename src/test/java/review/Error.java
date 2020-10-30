@@ -4,7 +4,7 @@ import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-public class ErrorFlux {
+public class Error {
 
     Flux<String> FluxoGeralParaTest = Flux.just("A","B","C");
 
@@ -21,35 +21,6 @@ public class ErrorFlux {
                 .expectNext("A","B")
                 .expectError(RuntimeException.class)
                 .verify();
-    }
-
-    @Test
-    public void fluxTest5() {
-        Flux<String> flux = Flux
-                .just("A","B")
-                .concatWith(Flux.error(new RuntimeException("Error:")))
-                .log();
-
-        StepVerifier
-                .create(flux)
-                .expectSubscription()
-                .expectNext("A","B")
-                .expectErrorMessage("Error:")
-                .verify();
-    }
-
-    @Test
-    public void fluxTest6() {
-        Flux<String> fl = Flux
-                .just("A")
-                .concatWith(Flux.error(new RuntimeException("Error")))
-                .log();
-
-        StepVerifier.create(fl)
-                    .expectSubscription()
-                    .expectNext("A")
-                    .expectErrorMessage("Error")
-                    .verify();
     }
 
     @Test

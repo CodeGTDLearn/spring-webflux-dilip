@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -32,9 +33,9 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@DirtiesContext
 @AutoConfigureWebTestClient
-@ActiveProfiles("test")
+//@DirtiesContext
+//@ActiveProfiles("test")
 public class Controller_Save {
 
     @Autowired

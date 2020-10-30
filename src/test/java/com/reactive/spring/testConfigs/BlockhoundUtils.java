@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 import reactor.blockhound.BlockHound;
 
 @NoArgsConstructor
-public class BlockhoundLiberacao {
+public class BlockhoundUtils {
 
     static void liberarMetodos() {
 

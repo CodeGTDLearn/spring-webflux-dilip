@@ -98,7 +98,7 @@ public class LoadFlux {
         List<String> list = Arrays.asList("adam","jenny");
         Flux<String> flist = Flux.fromStream(list.stream());
 
-//        flist.subscribe(item -> log.info("Name is {}",item));
+        flist.subscribe(item -> log.info("Name is {}",item));
 
         StepVerifier
                 .create(flist)

@@ -6,8 +6,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
-public class JoinFluxMono {
-
+public class JoinZipFluxMono {
 
     Flux<String> flux1 = Flux.just("A","a")
                              .delayElements(Duration.ofSeconds(1));
@@ -29,6 +28,7 @@ public class JoinFluxMono {
 
     @Test
     public void Concat_FluxAfterFlux() {
+        //CRIA UM NOVO FLUX COM A CONCATENACAO
         Flux<String> concatFlux = Flux.concat(flux1,flux2,flux3);
 
         StepVerifier
@@ -39,7 +39,21 @@ public class JoinFluxMono {
     }
 
     @Test
-    public void Zip_FundeOsFluxos() {
+    public void Concat_With() {
+        //CONCATENA, NUM MESMO FLUX
+        Flux<String> fl = Flux
+                .just("A")
+                .concatWith(Flux.just("B"))
+                .log();
+
+        StepVerifier.create(fl)
+                    .expectSubscription()
+                    .expectNext("A","B")
+                    .verifyComplete();
+    }
+
+    @Test
+    public void Zip_FundeOrdenadamenteElementosDosFluxos() {
         Flux<String> concatFlux =
                 Flux
                         .zip(flux1,flux2,(t1,t2) -> {
@@ -51,18 +65,5 @@ public class JoinFluxMono {
                 .expectSubscription()
                 .expectNext("AB","ab")
                 .verifyComplete();
-    }
-
-    @Test
-    public void Concat_With() {
-        Flux<String> fl = Flux
-                .just("A")
-                .concatWith(Flux.just("B"))
-                .log();
-
-        StepVerifier.create(fl)
-                    .expectSubscription()
-                    .expectNext("A","B")
-                    .verifyComplete();
     }
 }

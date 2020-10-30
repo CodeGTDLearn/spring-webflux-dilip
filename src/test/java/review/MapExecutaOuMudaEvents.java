@@ -7,12 +7,13 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.List;
 
-public class FluxMonoMapTransformaEvents {
+public class MapExecutaOuMudaEvents {
 
     List<String> list = Arrays.asList("adam","jenny");
 
     @Test
     public void mapTransform() {
+
         //1 - Variavel FLOW armazenara a pipeline
         Flux<String> flow =
 

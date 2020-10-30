@@ -32,6 +32,7 @@ public class ReadFlux {
                 // 1-Subscriber -> Subscribe no  Publisher
                 // Publisher: Flux + Mono sao implentacoes de Publisher
                 .subscribe(
+
                         // 2-Aplicando SOUT nos elements carregados no Flux
 //                        System.out::println,
                         (item) -> System.out.println(item),

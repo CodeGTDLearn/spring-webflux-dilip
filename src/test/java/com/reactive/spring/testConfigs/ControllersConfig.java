@@ -36,7 +36,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Slf4j
 
 //*********************************************
-//**        ++++ DIRTIESCONTEXT ++++        **
+//**        ++++ DIRTIES-CONTEXT ++++        **
 //*********************************************
 // @DirtiesContext OPTIONS, such as:
 // a) DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)

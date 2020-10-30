@@ -12,12 +12,8 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import reactor.blockhound.BlockHound;
-
-import static org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 //*********************************************
 //**        ++++ OBSERVATION 01 ++++         **
@@ -73,7 +69,7 @@ public class HandlerConfig {
                                 Matchers.lessThanOrEqualTo(MAX_TIMEOUT))
                         .expectContentType(API_CONTENT_TYPE)
                         .build();
-        BlockhoundLiberacao.liberarMetodos();
+        BlockhoundUtils.liberarMetodos();
     }
 
     @AfterClass
@@ -81,7 +77,3 @@ public class HandlerConfig {
         RestAssuredWebTestClient.reset();
     }
 }
-
-
-
-
